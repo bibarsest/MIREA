@@ -1,0 +1,8 @@
+﻿  Practic_4.cpp
+C:\Users\mrzem\source\repos\MIREA\PgLg_Filatov_2_sem\Practic_4\Practic_4\Practic_4.cpp(294,5): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\mrzem\source\repos\MIREA\PgLg_Filatov_2_sem\Practic_4\Practic_4\Practic_4.cpp(621,24): warning C4477: "fscanf_s": в строке форматирования "%s" требуется аргумент типа "unsigned int", но вариативный аргумент "2" имеет тип "unsigned __int64"
+C:\Users\mrzem\source\repos\MIREA\PgLg_Filatov_2_sem\Practic_4\Practic_4\Practic_4.cpp(621,24): message : этот аргумент используется в качестве размера буфера
+C:\Users\mrzem\source\repos\MIREA\PgLg_Filatov_2_sem\Practic_4\Practic_4\Practic_4.cpp(621,24): warning C4477: "fscanf_s": в строке форматирования "%s" требуется аргумент типа "unsigned int", но вариативный аргумент "4" имеет тип "unsigned __int64"
+C:\Users\mrzem\source\repos\MIREA\PgLg_Filatov_2_sem\Practic_4\Practic_4\Practic_4.cpp(621,24): message : этот аргумент используется в качестве размера буфера
+C:\Users\mrzem\source\repos\MIREA\PgLg_Filatov_2_sem\Practic_4\Practic_4\Practic_4.cpp(589): warning C4715: prac_3: значение возвращается не при всех путях выполнения
+  Practic_4.vcxproj -> C:\Users\mrzem\source\repos\MIREA\PgLg_Filatov_2_sem\Practic_4\x64\Debug\Practic_4.exe
