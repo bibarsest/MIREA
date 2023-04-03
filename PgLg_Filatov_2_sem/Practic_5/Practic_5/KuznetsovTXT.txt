@@ -1,0 +1,10 @@
+Microsoft Office 4 870.989990 11 1 2011 
+Lotus SmartSute 5 1020.989990 21 12 2012 
+Sun StarOffice 4 9.990000 21 10 2020 
+Company1 Office1 4 10.000000 20 2 2010 
+Company2 Office2 6 10.000000 21 2 2011 
+Company3 Office3 5 11.000000 22 3 2010 
+Company4 Office4 7 12.000000 23 2 2010 
+Company5 Office5 8 10.000000 24 5 2010 
+Company6 Office6 9 10.000000 25 2 2010 
+Company7 Office7 10 10.000000 2 6 2010 
