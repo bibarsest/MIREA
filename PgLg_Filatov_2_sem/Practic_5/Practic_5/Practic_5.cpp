@@ -778,23 +778,24 @@ public:
     //}
     clRecord(const char filename[]) // метод для считывания строчки из файла
     {
-        struct Date MethodDate;
+        //struct Date MethodDate;
         FILE* file;
         Record MethodFileTable;
         fopen_s(&file, filename, "r");
         //for (int i = 0; i < numberofline; i++)
         //{
             
-            fscanf_s(file, "%s %s %d %f %d %d %d", MethodFileTable.Company, _countof(MethodFileTable.Company), MethodFileTable.Name, _countof(MethodFileTable.Name),
-                &Parts, &Price,
-                &MethodDate.Day, &MethodDate.Month, &MethodDate.Year); clRDate.setDate(MethodDate);
-            Company = MethodFileTable.Company; Name = MethodFileTable.Name;
+        fscanf_s(file, "%s %s %d %f %d %d %d", MethodFileTable.Company, _countof(MethodFileTable.Company), MethodFileTable.Name, _countof(MethodFileTable.Name),
+        &Parts, &Price,
+        &MethodFileTable.RDate.Day, &MethodFileTable.RDate.Month, &MethodFileTable.RDate.Year); clRDate.setDate(MethodFileTable.RDate);
+        Company = MethodFileTable.Company; Name = MethodFileTable.Name;
         //}
+        fclose(file);
     }
 
     clRecord(const char filename[], int numberofline) // метод для считывания строчек из файла (для динамического массива объектов класса)
     {
-        struct Date MethodDate;
+        //struct Date MethodDate;
         FILE* file;
         Record MethodFileTable;
         fopen_s(&file, filename, "r");
@@ -804,10 +805,11 @@ public:
             
                 fscanf_s(file, "%s %s %d %f %d %d %d", MethodFileTable.Company, _countof(MethodFileTable.Company), MethodFileTable.Name, _countof(MethodFileTable.Name),
                     &Parts, &Price,
-                    &MethodDate.Day, &MethodDate.Month, &MethodDate.Year); clRDate.setDate(MethodDate);
+                    &MethodFileTable.RDate.Day, &MethodFileTable.RDate.Month, &MethodFileTable.RDate.Year); clRDate.setDate(MethodFileTable.RDate);
                 Company = MethodFileTable.Company; Name = MethodFileTable.Name;
             
         }
+        fclose(file);
     }
 
     clRecord(Record* PRecord)
@@ -873,6 +875,8 @@ int main()
     {
         delete R3[i];
     }
+    //delete[]R3;
     Record MR = {"BI", "BARSEST", 10, 100, 25, 10, 2004};
     clRecord R4(&MR); cout << "R4 = "; R4.printRecord();
+    _fcloseall();
 }
