@@ -271,18 +271,14 @@ void prac_1(Record T[])
 {
     SetConsoleCP(1251); //rus
     SetConsoleOutputCP(1251); //rus
+    cout << "Введите количество строк таблицы: ";
     int lines_table;
-vvod:cout << "Введите количество строк таблицы [1-10]: ";
-    cin >> lines_table; if (lines_table > 10 or lines_table < 1)
-    {
-        cout << "Ошибка ввода.\n"; cin.clear(); cin.ignore(40000, '\n'); goto vvod; // очистка буфера в случае неправильного ввода
-    }
-    cin.clear(); cin.ignore(40000, '\n'); // очистка буфера
+    cin >> lines_table;
     int flag[10][1];
     int minmonth = 30, maxmonth = 0, i_min = 300, i_max = 0; char uslovie_1;
-    //usl1:cout << "Выполнить код согласно условию 1-ой практики, вариант 3? (y/n) \n Условие: Поменять местами записи (элементы массива структур), содержащие минимальный и максимальный номер месяца даты" << endl;
-    //    cin >> uslovie_1;
-    //    if (uslovie_1 != 'y' and uslovie_1 != 'n') { goto usl1; }
+usl1:cout << "Выполнить код согласно условию 1-ой практики, вариант 3? (y/n) \n Условие: Поменять местами записи (элементы массива структур), содержащие минимальный и максимальный номер месяца даты" << endl;
+    cin >> uslovie_1;
+    if (uslovie_1 != 'y' and uslovie_1 != 'n') { goto usl1; }
     struct Record Table[10] =
     {
         {"Office", "Microsoft", 4, 870.99, {11,01,2011}},
@@ -296,76 +292,76 @@ vvod:cout << "Введите количество строк таблицы [1-1
         {"Office6","Company6",9,10,{25,02,2010}},
         {"Office7","Company7",10,10,{2,06,2010}}
     };
-    //DrawLine();
-    //Preset();
-    //DrawLineWithSections();
-    //for (int i = 0; i < lines_table; i++) // флаги для добавления нулей при выводе, если число однозначное
-    //{
-    //    if (IntLength(Table[i].RDate.Day) == 1) flag[i][0] = 1;
-    //    if (IntLength(Table[i].RDate.Month) == 1) flag[i][1] = 1;
-    //}
-    //switch (uslovie_1)
-    //{
-    //case('n'):
-    //{
-    //    for (int i = 0; i < lines_table; i++) // вывод без условия задачи
-    //    {
-    //        cout.fill(' ');
-    //        cout << left << "| "; cout.width(name - 2); cout << left << Table[i].Name;
-    //        cout << left << "| "; cout.width(company - 2); cout << left << Table[i].Company;
-    //        cout << left << "| "; cout.width(parts - 2); cout << left << Table[i].Parts;
-    //        cout << left << "| "; cout.width(price - 2); cout << left << Table[i].Price;
-    //        cout << left << "| "; if (flag[i][0] == 1) { cout << "0"; } cout << left << Table[i].RDate.Day << "."; if (flag[i][1] == 1) { cout << "0"; } cout << Table[i].RDate.Month << "."; cout.width(date - 8); cout << Table[i].RDate.Year; cout << "|" << endl;
-    //        if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
-    //    }
-    //    break;
-    //}
-    //case('y'):
-    //{
-    //    for (int j = 0; j < lines_table; j++)
-    //    {
-    //        if (Table[j].RDate.Month < minmonth) { minmonth = Table[j].RDate.Month; i_min = j; }
-    //        if (Table[j].RDate.Month > maxmonth) { maxmonth = Table[j].RDate.Month; i_max = j; }
-    //    }
-    //    for (int i = 0; i < lines_table; i++) // вывод с условием задачи
-    //    {
-    //        if (Table[i].RDate.Month == minmonth and Table[i].RDate.Month != maxmonth) //вывод max
-    //        {
-    //            cout.fill(' ');
-    //            cout << left << "| "; cout.width(name - 2); cout << left << Table[i_max].Name;
-    //            cout << left << "| "; cout.width(company - 2); cout << left << Table[i_max].Company;
-    //            cout << left << "| "; cout.width(parts - 2); cout << left << Table[i_max].Parts;
-    //            cout << left << "| "; cout.width(price - 2); cout << left << Table[i_max].Price;
-    //            cout << left << "| "; if (flag[i_max][0] == 1) { cout << "0"; } cout << left << Table[i_max].RDate.Day << "."; if (flag[i_max][1] == 1) { cout << "0"; } cout << Table[i_max].RDate.Month << "."; cout.width(date - 8); cout << Table[i_max].RDate.Year; cout << "|" << endl;
-    //            if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
-    //        }
-    //        if (Table[i].RDate.Month == maxmonth and Table[i].RDate.Month != minmonth) //вывод min
-    //        {
-    //            cout.fill(' ');
-    //            cout << left << "| "; cout.width(name - 2); cout << left << Table[i_min].Name;
-    //            cout << left << "| "; cout.width(company - 2); cout << left << Table[i_min].Company;
-    //            cout << left << "| "; cout.width(parts - 2); cout << left << Table[i_min].Parts;
-    //            cout << left << "| "; cout.width(price - 2); cout << left << Table[i_min].Price;
-    //            cout << left << "| "; if (flag[i_min][0] == 1) { cout << "0"; } cout << left << Table[i_min].RDate.Day << "."; if (flag[i_min][1] == 1) { cout << "0"; } cout << Table[i_min].RDate.Month << "."; cout.width(date - 8); cout << Table[i_min].RDate.Year; cout << "|" << endl;
-    //            if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
-    //        }
-    //        if ((Table[i].RDate.Month != maxmonth and Table[i].RDate.Month != minmonth) or (Table[i].RDate.Month == maxmonth and Table[i].RDate.Month == minmonth))
-    //        {
-    //            cout.fill(' ');
-    //            cout << left << "| "; cout.width(name - 2); cout << left << Table[i].Name;
-    //            cout << left << "| "; cout.width(company - 2); cout << left << Table[i].Company;
-    //            cout << left << "| "; cout.width(parts - 2); cout << left << Table[i].Parts;
-    //            cout << left << "| "; cout.width(price - 2); cout << left << Table[i].Price;
-    //            cout << left << "| "; if (flag[i][0] == 1) { cout << "0"; } cout << left << Table[i].RDate.Day << "."; if (flag[i][1] == 1) { cout << "0"; } cout << Table[i].RDate.Month << "."; cout.width(date - 8); cout << Table[i].RDate.Year; cout << "|" << endl;
-    //            if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
-    //        }
-    //    }
-    //    break;
-    //}
-    //}
-    //DrawLine();
-    //cout.width(n); cout << left << "| Примечание: возможно бесплатно получить продукт StarOffice через Internet "; cout << "|" << endl;
-    //DrawLine();
+    DrawLine();
+    Preset();
+    DrawLineWithSections();
+    for (int i = 0; i < lines_table; i++) // флаги для добавления нулей при выводе, если число однозначное
+    {
+        if (IntLength(Table[i].RDate.Day) == 1) flag[i][0] = 1;
+        if (IntLength(Table[i].RDate.Month) == 1) flag[i][1] = 1;
+    }
+    switch (uslovie_1)
+    {
+    case('n'):
+    {
+        for (int i = 0; i < lines_table; i++) // вывод без условия задачи
+        {
+            cout.fill(' ');
+            cout << left << "| "; cout.width(name - 2); cout << left << Table[i].Name;
+            cout << left << "| "; cout.width(company - 2); cout << left << Table[i].Company;
+            cout << left << "| "; cout.width(parts - 2); cout << left << Table[i].Parts;
+            cout << left << "| "; cout.width(price - 2); cout << left << Table[i].Price;
+            cout << left << "| "; if (flag[i][0] == 1) { cout << "0"; } cout << left << Table[i].RDate.Day << "."; if (flag[i][1] == 1) { cout << "0"; } cout << Table[i].RDate.Month << "."; cout.width(date - 8); cout << Table[i].RDate.Year; cout << "|" << endl;
+            if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
+        }
+        break;
+    }
+    case('y'):
+    {
+        for (int j = 0; j < lines_table; j++)
+        {
+            if (Table[j].RDate.Month < minmonth) { minmonth = Table[j].RDate.Month; i_min = j; }
+            if (Table[j].RDate.Month > maxmonth) { maxmonth = Table[j].RDate.Month; i_max = j; }
+        }
+        for (int i = 0; i < lines_table; i++) // вывод с условием задачи
+        {
+            if (Table[i].RDate.Month == minmonth and Table[i].RDate.Month != maxmonth) //вывод max
+            {
+                cout.fill(' ');
+                cout << left << "| "; cout.width(name - 2); cout << left << Table[i_max].Name;
+                cout << left << "| "; cout.width(company - 2); cout << left << Table[i_max].Company;
+                cout << left << "| "; cout.width(parts - 2); cout << left << Table[i_max].Parts;
+                cout << left << "| "; cout.width(price - 2); cout << left << Table[i_max].Price;
+                cout << left << "| "; if (flag[i_max][0] == 1) { cout << "0"; } cout << left << Table[i_max].RDate.Day << "."; if (flag[i_max][1] == 1) { cout << "0"; } cout << Table[i_max].RDate.Month << "."; cout.width(date - 8); cout << Table[i_max].RDate.Year; cout << "|" << endl;
+                if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
+            }
+            if (Table[i].RDate.Month == maxmonth and Table[i].RDate.Month != minmonth) //вывод min
+            {
+                cout.fill(' ');
+                cout << left << "| "; cout.width(name - 2); cout << left << Table[i_min].Name;
+                cout << left << "| "; cout.width(company - 2); cout << left << Table[i_min].Company;
+                cout << left << "| "; cout.width(parts - 2); cout << left << Table[i_min].Parts;
+                cout << left << "| "; cout.width(price - 2); cout << left << Table[i_min].Price;
+                cout << left << "| "; if (flag[i_min][0] == 1) { cout << "0"; } cout << left << Table[i_min].RDate.Day << "."; if (flag[i_min][1] == 1) { cout << "0"; } cout << Table[i_min].RDate.Month << "."; cout.width(date - 8); cout << Table[i_min].RDate.Year; cout << "|" << endl;
+                if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
+            }
+            if ((Table[i].RDate.Month != maxmonth and Table[i].RDate.Month != minmonth) or (Table[i].RDate.Month == maxmonth and Table[i].RDate.Month == minmonth))
+            {
+                cout.fill(' ');
+                cout << left << "| "; cout.width(name - 2); cout << left << Table[i].Name;
+                cout << left << "| "; cout.width(company - 2); cout << left << Table[i].Company;
+                cout << left << "| "; cout.width(parts - 2); cout << left << Table[i].Parts;
+                cout << left << "| "; cout.width(price - 2); cout << left << Table[i].Price;
+                cout << left << "| "; if (flag[i][0] == 1) { cout << "0"; } cout << left << Table[i].RDate.Day << "."; if (flag[i][1] == 1) { cout << "0"; } cout << Table[i].RDate.Month << "."; cout.width(date - 8); cout << Table[i].RDate.Year; cout << "|" << endl;
+                if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
+            }
+        }
+        break;
+    }
+    }
+    DrawLine();
+    cout.width(n); cout << left << "| Примечание: возможно бесплатно получить продукт StarOffice через Internet "; cout << "|" << endl;
+    DrawLine();
     //prac_0();
     for (int i = 0; i < lines_table; i++) // заполняем массив 2-ой практики
     {
@@ -738,20 +734,9 @@ public:
     }
     void setDate() //ручной ввод
     {
-    vvod_d:cout << "День: "; cin >> Day;
-        if (Day > 31 or Day < 1)
-        {
-            cout << "Ошибка ввода.\n"; cin.clear(); cin.ignore(40000, '\n'); goto vvod_d; // очистка буфера в случае неправильного ввода
-        }
-        cin.clear(); cin.ignore(40000, '\n'); // очистка буфера
-    vvod_m:cout << "Месяц: "; cin >> Month;
-        if (Month > 12 or Month < 1)
-        {
-            cout << "Ошибка ввода.\n"; cin.clear(); cin.ignore(40000, '\n'); goto vvod_m; // очистка буфера в случае неправильного ввода
-        }
-        cin.clear(); cin.ignore(40000, '\n'); // очистка буфера
+        cout << "День: "; cin >> Day;
+        cout << "Месяц: "; cin >> Month;
         cout << "Год: "; cin >> Year;
-
     }
     void addDay(int delta)
     {
@@ -764,10 +749,10 @@ class clRecord
     string Name;
 public:
     string Company;
-
+    clDate clRDate;
     clRecord() //конструктор по умолчанию 
     {
-        Name = "undefined"; Company = "undefined"; Parts = 0; Price = 0;
+        Name = "undefined"; Company = "undefined"; Parts = 0; Price = 0; 
     }
     //clRecord(const char filename[], int numberofline)
     //{
@@ -791,46 +776,44 @@ public:
     //    //// вывод в консоль
     //    //fclose(file);
     //}
-    clRecord(const char _filename[]) // метод для считывания строчки из файла
+    clRecord(const char filename[]) // метод для считывания строчки из файла
     {
-        //struct Date MethodDate;
+        struct Date MethodDate;
         FILE* file;
         Record MethodFileTable;
-        fopen_s(&file, _filename, "r");
+        fopen_s(&file, filename, "r");
         //for (int i = 0; i < numberofline; i++)
         //{
-
-        fscanf_s(file, "%s %s %d %f %d %d %d", MethodFileTable.Company, _countof(MethodFileTable.Company), MethodFileTable.Name, _countof(MethodFileTable.Name),
-            &Parts, &Price,
-            &MethodFileTable.RDate.Day, &MethodFileTable.RDate.Month, &MethodFileTable.RDate.Year); clRDate.setDate(MethodFileTable.RDate);
-        Company = MethodFileTable.Company; Name = MethodFileTable.Name;
-        //}
-        fclose(file);
-    }
-
-    clRecord(const char _filename[], int _numberofline) // метод для считывания строчек из файла (для динамического массива объектов класса)
-    {
-        //struct Date MethodDate;
-        FILE* file;
-        Record MethodFileTable;
-        fopen_s(&file, _filename, "r");
-        for (int i = -1; i < _numberofline; ++i)
-        {
-
-
+            
             fscanf_s(file, "%s %s %d %f %d %d %d", MethodFileTable.Company, _countof(MethodFileTable.Company), MethodFileTable.Name, _countof(MethodFileTable.Name),
                 &Parts, &Price,
-                &MethodFileTable.RDate.Day, &MethodFileTable.RDate.Month, &MethodFileTable.RDate.Year); clRDate.setDate(MethodFileTable.RDate);
+                &MethodDate.Day, &MethodDate.Month, &MethodDate.Year); clRDate.setDate(MethodDate);
             Company = MethodFileTable.Company; Name = MethodFileTable.Name;
-
-        }
-        fclose(file);
+        //}
     }
 
-    clRecord(Record* _PRecord)
+    clRecord(const char filename[], int numberofline) // метод для считывания строчек из файла (для динамического массива объектов класса)
     {
-        Company = _PRecord->Company; Name = _PRecord->Name; Parts = _PRecord->Parts; Price = _PRecord->Price;
-        clRDate.setDate(_PRecord->RDate.Day, _PRecord->RDate.Month, _PRecord->RDate.Year);
+        struct Date MethodDate;
+        FILE* file;
+        Record MethodFileTable;
+        fopen_s(&file, filename, "r");
+        for (int i = -1; i < numberofline; ++i)
+        {
+            
+            
+                fscanf_s(file, "%s %s %d %f %d %d %d", MethodFileTable.Company, _countof(MethodFileTable.Company), MethodFileTable.Name, _countof(MethodFileTable.Name),
+                    &Parts, &Price,
+                    &MethodDate.Day, &MethodDate.Month, &MethodDate.Year); clRDate.setDate(MethodDate);
+                Company = MethodFileTable.Company; Name = MethodFileTable.Name;
+            
+        }
+    }
+
+    clRecord(Record* PRecord)
+    {
+        Company = PRecord->Company; Name = PRecord->Name; Parts = PRecord->Parts; Price = PRecord->Price;
+        clRDate.setDate(PRecord->RDate.Day, PRecord->RDate.Month, PRecord->RDate.Year);
     }
 
     ~clRecord() { cout << "Привет от деструктора clRecord!\n"; } // деструктор для деинициализации объекта
@@ -845,7 +828,6 @@ private:
     int Parts;
 protected:
     float Price;
-    clDate clRDate;
 };
 int main()
 {
@@ -883,21 +865,14 @@ int main()
     clRecord R1; cout << "R1 = "; R1.printRecord(); // считываю строчку из файла
     clRecord R2("KuznetsovTXT.txt"); cout << "R2 = "; R2.printRecord();
     clRecord* R3[3];
-    for (int i = 0; i < 3; i++) // считываю строчки из файла и заношу по строчке в объект R3[i] (через указатели и динамический массив)
+    for (int i = 0; i < 3; i++) // считываю строчки из файла и заношу по строчке в объект R3[i]
     {
         R3[i] = new clRecord("KuznetsovTXT.txt", i); cout << "R3[" << i << "] = "; R3[i]->printRecord();
     }
-    //for (int i = 0; i < 3; i++) // очистка памяти. Закомментировал в связи с тем, что, насколько я понял, я удаляю указатели и возникает утечка памяти. Деструктор должен справиться с очисткой.
-    //{
-    //    delete R3[i];
-    //}
-    clRecord R3_2[3];
-    for (int i = 0; i < 3; i++) // считываю строчки из файла и заношу по строчке в объект R3_2[i] (статический массив)
+    for (int i = 0; i < 3; i++) // очистка памяти
     {
-        R3_2[i] = clRecord("KuznetsovTXT.txt", i); cout << "R3_2[" << i << "] = "; R3_2[i].printRecord();
+        delete R3[i];
     }
-    //delete[]R3;
-    Record MR = { "BI", "BARSEST", 10, 100, 25, 10, 2004 };
+    Record MR = {"BI", "BARSEST", 10, 100, 25, 10, 2004};
     clRecord R4(&MR); cout << "R4 = "; R4.printRecord();
-    _fcloseall();
 }
