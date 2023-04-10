@@ -73,7 +73,7 @@ class Student
     Date BirthDate; // Даты рождения, поступления
     int EnrollmentYear;
     string Institute, Department, Group, RecordBook; // Институт, кафедра, группа, номер зачетной книжки (шифр)
-    string Sex; // Пол. true = мужчина, false = женщина
+    string Sex; // Пол. м = мужчина, ж = женщина
 public:
     Student() // конструктор по умолчанию
     {
@@ -117,8 +117,8 @@ public:
         cout << "Кафедра: "; cin >> Department;
         cout << "Группа: "; cin >> Group;
         cout << "Номер зачетной книжки: "; cin >> RecordBook;
-    INPUT_SEX:cout << "Пол (1-мужчина, 0-женщина): "; cin >> Sex;
-        if ((Sex != "м") && (Sex != "ж")) { cout << "Ошибка ввода. Введите *м* для выбора мужчины, *ж* для женщины "; goto INPUT_SEX; }
+    INPUT_SEX:cout << "Пол (м-мужчина, ж-женщина): "; cin >> Sex;
+        if ((Sex != "м") && (Sex != "ж")) { cout << "Ошибка ввода. "; goto INPUT_SEX; }
         Clear();
     }
     void PrintStudent() // вывод значений
