@@ -110,7 +110,9 @@ public:
         if (!(Check(SurName))) { cout << "Ошибка ввода. Отчество не должно содержать цифр. "; goto INPUT_SURNAME; }
         Clear(); // очистка буфера
         cout << "Дата рождения: "; BirthDate.SetDate();
-        cout << "Год поступления: "; cin >> EnrollmentYear;
+        INPUT_ENROLLMENT:cout << "Год поступления: "; cin >> EnrollmentYear;
+        if (EnrollmentYear < 1900) { cout << "Ошибка ввода. "; Clear(); goto INPUT_ENROLLMENT; }
+        Clear();
         cout << "Институт: "; cin >> Institute;
         cout << "Кафедра: "; cin >> Department;
         cout << "Группа: "; cin >> Group;
