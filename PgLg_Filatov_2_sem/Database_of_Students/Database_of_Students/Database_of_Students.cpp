@@ -112,7 +112,7 @@ public:
         cout << "Дата рождения: "; BirthDate.SetDate();
     INPUT_ENROLLMENT:cout << "Год поступления: "; cin >> EnrollmentYear;
         if (EnrollmentYear < 1900) { cout << "Ошибка ввода. "; Clear(); goto INPUT_ENROLLMENT; }
-        Clear(); // test 2
+        Clear(); // test 3
         cout << "Институт: "; cin >> Institute;
         cout << "Кафедра: "; cin >> Department;
         cout << "Группа: "; cin >> Group;
