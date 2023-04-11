@@ -1,9 +1,11 @@
 ﻿// Database_of_Students.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-// 11.04.2023
+// 11.04.2023 22:40
 
 #include <iostream>
 using namespace std;
 #include <windows.h>
+//#include <stdio.h>
+#include <fstream>
 
 bool Check(string _word) // проверка, есть ли в слове цифры
 {
@@ -60,6 +62,34 @@ public:
         }
         Clear(); // очистка буфера
     }
+    int GetDay() { return Day; }
+    int GetMonth() { return Month; }
+    int GetYear() { return Year; }
+    int GetInfo(string _info) 
+    {
+        if (_info == "Day") return Day;
+        if (_info == "Month") return Month;
+        if (_info == "Year") return Year;
+    }
+    void InputInFile(const char _filename[])
+    {
+        FILE* file;
+        fopen_s(&file, _filename, "a");
+        fprintf(file, "%d %d %d ", Day, Month, Year);
+        fclose(file);
+    }
+    void InputInFile()
+    {
+        FILE* file;
+        fopen_s(&file, "DB.txt", "a");
+        fprintf(file, "%d %d %d ", Day, Month, Year);
+        fclose(file);
+    }
+    //int GetDate()
+    //{
+    //    //Date GD; GD.Day = Day; GD.Month = Month; GD.Year = Year;
+    //    return Day, Month, Year;
+    //}
     void PrintDate() // вывод значений
     {
         cout << Day << " " << Month << " " << Year;
@@ -74,6 +104,7 @@ class Student
     int EnrollmentYear;
     string Institute, Department, Group, RecordBook; // Институт, кафедра, группа, номер зачетной книжки (шифр)
     string Sex; // Пол. м = мужчина, ж = женщина
+
 public:
     Student() // конструктор по умолчанию
     {
@@ -98,6 +129,7 @@ public:
         Institute = _Institute; Department = _Department; Group = _Group; RecordBook = _RecordBook; 
         Sex = _Sex;
     }
+
     void SetStudent() // ввод с клавиатуры
     {
     INPUT_LASTNAME:cout << "Фамилия: "; cin >> LastName;
@@ -121,6 +153,43 @@ public:
         if ((Sex != "м") && (Sex != "ж")) { cout << "Ошибка ввода. "; goto INPUT_SEX; }
         Clear();
     }
+
+    //void InputInFile()
+    //{
+
+    //    FILE* file;
+    //    //ofstream wf("DB.txt", ios::out | ios::app);
+    //    /*wf.write((char*)&LastName(sizeof(Student));
+    //    wf.close();*/
+    //    //"DB.txt" << LastName;
+    //    fopen_s(&file, "DB.txt", "a");
+    //    fprintf_s(file, "%s %s %s ", LastName, FirstName, SurName);
+    //    //BirthDate.InputInFile();
+    //    fprintf(file, "%d %s %s %s %s %s \n", EnrollmentYear, Institute, Department, Group, RecordBook, Sex);
+    //    fclose(file);
+    //}
+
+    void InputInFile()
+    {
+
+        ofstream file;
+        file.open("DB.txt", ios::app);
+        file << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " " 
+            << BirthDate.GetInfo("Month") << " " << BirthDate.GetInfo("Year") << " " << EnrollmentYear << " " 
+            << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
+
+    }
+
+    void InputInFile(const char _filename[])
+    {
+        
+        ofstream file;
+        file.open(_filename, ios::app);
+        file << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " "
+            << BirthDate.GetInfo("Month") << " " << BirthDate.GetInfo("Year") << " " << EnrollmentYear << " "
+            << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
+
+    }
     void PrintStudent() // вывод значений
     {
         cout << LastName << " " << FirstName << " " << SurName << " "; BirthDate.PrintDate(); cout << " " << EnrollmentYear << " " << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
@@ -132,6 +201,9 @@ int main()
 {
     SetConsoleCP(1251); //rus
     SetConsoleOutputCP(1251); //rus
+    //FILE* file;
+    /*fopen_s(&file, "DB.txt", "w");
+    fclose(file);*/
     int choice;
 start:cout << "Выберите операцию из нижеперечисленных. \n 1. Добавить запись о студенте в файл.\n 2. Отобразить данные о студентах.\n 3. Изменить данные студента.\n";
     cout << " 4. Удалить данные студента.\n 5. Выполнить ...задание...\n 6. Выход из программы" << endl;
@@ -142,13 +214,30 @@ choice_input:cout << "Выберите операцию: ";
         cout << "Ошибка ввода.\n"; Clear(); goto choice_input; // очистка буфера в случае неправильного ввода и возврат к началу ввода
     }
     //cout << endl << choice;
-    Student A1; A1.SetStudent("Кузнецов", "Алексей", "Александрович", { 25,10,2004 }, 2022, "Кибербезопасности", "КБ-1", "БАСО-04-22", "22Б034", "м");
+    Student A1; A1.SetStudent("zhemerikin", "max", "alexeevich", { 25,10,2004 }, 2022, "Кибербезопасности", "КБ-1", "БАСО-04-22", "22Б034", "м");
     A1.PrintStudent();
+    A1.InputInFile("DB.txt");
+    //fopen_s(&file, "DB.txt", "a");
+    //fprintf(file, "%d ", 1478);
+    //Date SALAM(25, 10, 2004);
+    //SALAM.InputInFile("АРТЕМ ЭМ АЛЕКСАНДРОВИЧ.txt");
+    //A1.InputInFile(); 
+    //fclose(file);
+    return 0;
     Date B; B.SetDate(); B.PrintDate();
-    Student A2; A2.SetStudent(); A2.PrintStudent();
+    int C;
+    //Student A2; A2.SetStudent(); A2.PrintStudent();
+    cout << "get date B: "; C = B.GetInfo("Day"); cout << C; C = B.GetInfo("Month"); cout << C;
+    Student InputStudent;
     switch (choice) 
     {
     case 1:
+        
+        //fopen_s(&file, "DB.txt", "a");
+        cout << "Добавить запись о студенте: " << endl;
+        //InputStudent.SetStudent(); InputStudent.InputInFile("DB.txt"); fclose(file);
+        //Date temp; temp.SetDate(InputStudent.BirthDate.GetDate();
+        //fprintf(file, "%s %s %d %f %d %d %d \n", ;
         goto start;
         break;
     case 2:

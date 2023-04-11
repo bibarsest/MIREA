@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\PgLg_Filatov_2_sem",
+    "\\PgLg_Filatov_2_sem\\Database_of_Students",
+    "\\PgLg_Filatov_2_sem\\Database_of_Students\\Database_of_Students"
   ],
-  "SelectedNode": "\\practic5.sln",
+  "SelectedNode": "\\PgLg_Filatov_2_sem\\Database_of_Students\\Database_of_Students\\Database_of_Students.cpp",
   "PreviewInSolutionExplorer": false
 }

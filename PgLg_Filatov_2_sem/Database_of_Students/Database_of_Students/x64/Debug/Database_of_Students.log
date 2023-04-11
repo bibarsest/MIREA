@@ -1,2 +1,3 @@
 ﻿  Database_of_Students.cpp
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Database_of_Students\Database_of_Students\Database_of_Students.cpp(73): warning C4715: Date::GetInfo: значение возвращается не при всех путях выполнения
   Database_of_Students.vcxproj -> C:\Users\mrzem\Source\Repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Database_of_Students\x64\Debug\Database_of_Students.exe
