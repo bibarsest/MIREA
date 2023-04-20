@@ -271,15 +271,15 @@ void prac_1(Record T[])
 {
     SetConsoleCP(1251); //rus
     SetConsoleOutputCP(1251); //rus
-    cout << "Введите количество строк таблицы: ";
-    int lines_table;
-    cin >> lines_table;
+    //cout << "Введите количество строк таблицы: ";
+    const int lines_table =10;
+    /*cin >> lines_table;
     int flag[10][1];
     int minmonth = 30, maxmonth = 0, i_min = 300, i_max = 0; char uslovie_1;
 usl1:cout << "Выполнить код согласно условию 1-ой практики, вариант 3? (y/n) \n Условие: Поменять местами записи (элементы массива структур), содержащие минимальный и максимальный номер месяца даты" << endl;
     cin >> uslovie_1;
-    if (uslovie_1 != 'y' and uslovie_1 != 'n') { goto usl1; }
-    struct Record Table[10] =
+    if (uslovie_1 != 'y' and uslovie_1 != 'n') { goto usl1; }*/
+    struct Record Table[lines_table] =
     {
         {"Office", "Microsoft", 4, 870.99, {11,01,2011}},
         {"SmartSute", "Lotus", 5, 1020.99, {21,12,2012}},
@@ -292,76 +292,76 @@ usl1:cout << "Выполнить код согласно условию 1-ой �
         {"Office6","Company6",9,10,{25,02,2010}},
         {"Office7","Company7",10,10,{2,06,2010}}
     };
-    DrawLine();
-    Preset();
-    DrawLineWithSections();
-    for (int i = 0; i < lines_table; i++) // флаги для добавления нулей при выводе, если число однозначное
-    {
-        if (IntLength(Table[i].RDate.Day) == 1) flag[i][0] = 1;
-        if (IntLength(Table[i].RDate.Month) == 1) flag[i][1] = 1;
-    }
-    switch (uslovie_1)
-    {
-    case('n'):
-    {
-        for (int i = 0; i < lines_table; i++) // вывод без условия задачи
-        {
-            cout.fill(' ');
-            cout << left << "| "; cout.width(name - 2); cout << left << Table[i].Name;
-            cout << left << "| "; cout.width(company - 2); cout << left << Table[i].Company;
-            cout << left << "| "; cout.width(parts - 2); cout << left << Table[i].Parts;
-            cout << left << "| "; cout.width(price - 2); cout << left << Table[i].Price;
-            cout << left << "| "; if (flag[i][0] == 1) { cout << "0"; } cout << left << Table[i].RDate.Day << "."; if (flag[i][1] == 1) { cout << "0"; } cout << Table[i].RDate.Month << "."; cout.width(date - 8); cout << Table[i].RDate.Year; cout << "|" << endl;
-            if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
-        }
-        break;
-    }
-    case('y'):
-    {
-        for (int j = 0; j < lines_table; j++)
-        {
-            if (Table[j].RDate.Month < minmonth) { minmonth = Table[j].RDate.Month; i_min = j; }
-            if (Table[j].RDate.Month > maxmonth) { maxmonth = Table[j].RDate.Month; i_max = j; }
-        }
-        for (int i = 0; i < lines_table; i++) // вывод с условием задачи
-        {
-            if (Table[i].RDate.Month == minmonth and Table[i].RDate.Month != maxmonth) //вывод max
-            {
-                cout.fill(' ');
-                cout << left << "| "; cout.width(name - 2); cout << left << Table[i_max].Name;
-                cout << left << "| "; cout.width(company - 2); cout << left << Table[i_max].Company;
-                cout << left << "| "; cout.width(parts - 2); cout << left << Table[i_max].Parts;
-                cout << left << "| "; cout.width(price - 2); cout << left << Table[i_max].Price;
-                cout << left << "| "; if (flag[i_max][0] == 1) { cout << "0"; } cout << left << Table[i_max].RDate.Day << "."; if (flag[i_max][1] == 1) { cout << "0"; } cout << Table[i_max].RDate.Month << "."; cout.width(date - 8); cout << Table[i_max].RDate.Year; cout << "|" << endl;
-                if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
-            }
-            if (Table[i].RDate.Month == maxmonth and Table[i].RDate.Month != minmonth) //вывод min
-            {
-                cout.fill(' ');
-                cout << left << "| "; cout.width(name - 2); cout << left << Table[i_min].Name;
-                cout << left << "| "; cout.width(company - 2); cout << left << Table[i_min].Company;
-                cout << left << "| "; cout.width(parts - 2); cout << left << Table[i_min].Parts;
-                cout << left << "| "; cout.width(price - 2); cout << left << Table[i_min].Price;
-                cout << left << "| "; if (flag[i_min][0] == 1) { cout << "0"; } cout << left << Table[i_min].RDate.Day << "."; if (flag[i_min][1] == 1) { cout << "0"; } cout << Table[i_min].RDate.Month << "."; cout.width(date - 8); cout << Table[i_min].RDate.Year; cout << "|" << endl;
-                if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
-            }
-            if ((Table[i].RDate.Month != maxmonth and Table[i].RDate.Month != minmonth) or (Table[i].RDate.Month == maxmonth and Table[i].RDate.Month == minmonth))
-            {
-                cout.fill(' ');
-                cout << left << "| "; cout.width(name - 2); cout << left << Table[i].Name;
-                cout << left << "| "; cout.width(company - 2); cout << left << Table[i].Company;
-                cout << left << "| "; cout.width(parts - 2); cout << left << Table[i].Parts;
-                cout << left << "| "; cout.width(price - 2); cout << left << Table[i].Price;
-                cout << left << "| "; if (flag[i][0] == 1) { cout << "0"; } cout << left << Table[i].RDate.Day << "."; if (flag[i][1] == 1) { cout << "0"; } cout << Table[i].RDate.Month << "."; cout.width(date - 8); cout << Table[i].RDate.Year; cout << "|" << endl;
-                if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
-            }
-        }
-        break;
-    }
-    }
-    DrawLine();
-    cout.width(n); cout << left << "| Примечание: возможно бесплатно получить продукт StarOffice через Internet "; cout << "|" << endl;
-    DrawLine();
+    //DrawLine();
+    //Preset();
+    //DrawLineWithSections();
+    //for (int i = 0; i < lines_table; i++) // флаги для добавления нулей при выводе, если число однозначное
+    //{
+    //    if (IntLength(Table[i].RDate.Day) == 1) flag[i][0] = 1;
+    //    if (IntLength(Table[i].RDate.Month) == 1) flag[i][1] = 1;
+    //}
+    //switch (uslovie_1)
+    //{
+    //case('n'):
+    //{
+    //    for (int i = 0; i < lines_table; i++) // вывод без условия задачи
+    //    {
+    //        cout.fill(' ');
+    //        cout << left << "| "; cout.width(name - 2); cout << left << Table[i].Name;
+    //        cout << left << "| "; cout.width(company - 2); cout << left << Table[i].Company;
+    //        cout << left << "| "; cout.width(parts - 2); cout << left << Table[i].Parts;
+    //        cout << left << "| "; cout.width(price - 2); cout << left << Table[i].Price;
+    //        cout << left << "| "; if (flag[i][0] == 1) { cout << "0"; } cout << left << Table[i].RDate.Day << "."; if (flag[i][1] == 1) { cout << "0"; } cout << Table[i].RDate.Month << "."; cout.width(date - 8); cout << Table[i].RDate.Year; cout << "|" << endl;
+    //        if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
+    //    }
+    //    break;
+    //}
+    //case('y'):
+    //{
+    //    for (int j = 0; j < lines_table; j++)
+    //    {
+    //        if (Table[j].RDate.Month < minmonth) { minmonth = Table[j].RDate.Month; i_min = j; }
+    //        if (Table[j].RDate.Month > maxmonth) { maxmonth = Table[j].RDate.Month; i_max = j; }
+    //    }
+    //    for (int i = 0; i < lines_table; i++) // вывод с условием задачи
+    //    {
+    //        if (Table[i].RDate.Month == minmonth and Table[i].RDate.Month != maxmonth) //вывод max
+    //        {
+    //            cout.fill(' ');
+    //            cout << left << "| "; cout.width(name - 2); cout << left << Table[i_max].Name;
+    //            cout << left << "| "; cout.width(company - 2); cout << left << Table[i_max].Company;
+    //            cout << left << "| "; cout.width(parts - 2); cout << left << Table[i_max].Parts;
+    //            cout << left << "| "; cout.width(price - 2); cout << left << Table[i_max].Price;
+    //            cout << left << "| "; if (flag[i_max][0] == 1) { cout << "0"; } cout << left << Table[i_max].RDate.Day << "."; if (flag[i_max][1] == 1) { cout << "0"; } cout << Table[i_max].RDate.Month << "."; cout.width(date - 8); cout << Table[i_max].RDate.Year; cout << "|" << endl;
+    //            if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
+    //        }
+    //        if (Table[i].RDate.Month == maxmonth and Table[i].RDate.Month != minmonth) //вывод min
+    //        {
+    //            cout.fill(' ');
+    //            cout << left << "| "; cout.width(name - 2); cout << left << Table[i_min].Name;
+    //            cout << left << "| "; cout.width(company - 2); cout << left << Table[i_min].Company;
+    //            cout << left << "| "; cout.width(parts - 2); cout << left << Table[i_min].Parts;
+    //            cout << left << "| "; cout.width(price - 2); cout << left << Table[i_min].Price;
+    //            cout << left << "| "; if (flag[i_min][0] == 1) { cout << "0"; } cout << left << Table[i_min].RDate.Day << "."; if (flag[i_min][1] == 1) { cout << "0"; } cout << Table[i_min].RDate.Month << "."; cout.width(date - 8); cout << Table[i_min].RDate.Year; cout << "|" << endl;
+    //            if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
+    //        }
+    //        if ((Table[i].RDate.Month != maxmonth and Table[i].RDate.Month != minmonth) or (Table[i].RDate.Month == maxmonth and Table[i].RDate.Month == minmonth))
+    //        {
+    //            cout.fill(' ');
+    //            cout << left << "| "; cout.width(name - 2); cout << left << Table[i].Name;
+    //            cout << left << "| "; cout.width(company - 2); cout << left << Table[i].Company;
+    //            cout << left << "| "; cout.width(parts - 2); cout << left << Table[i].Parts;
+    //            cout << left << "| "; cout.width(price - 2); cout << left << Table[i].Price;
+    //            cout << left << "| "; if (flag[i][0] == 1) { cout << "0"; } cout << left << Table[i].RDate.Day << "."; if (flag[i][1] == 1) { cout << "0"; } cout << Table[i].RDate.Month << "."; cout.width(date - 8); cout << Table[i].RDate.Year; cout << "|" << endl;
+    //            if (i != lines_table - 1) DrawLineWithSections(); //не печатать для последней строчки
+    //        }
+    //    }
+    //    break;
+    //}
+    //}
+    //DrawLine();
+    //cout.width(n); cout << left << "| Примечание: возможно бесплатно получить продукт StarOffice через Internet "; cout << "|" << endl;
+    //DrawLine();
     //prac_0();
     for (int i = 0; i < lines_table; i++) // заполняем массив 2-ой практики
     {
