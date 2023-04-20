@@ -142,7 +142,7 @@ void prac_0()
     DrawLineWithSections();
     Output(1);
     DrawLineWithSections();
-    Output(2);
+    Output(2); 
     DrawLineWithSections();
     Output(3);
     DrawLine();
@@ -157,7 +157,7 @@ int IntLength(int number) //возвращает длину числа
         number = number / 10;
         count++;
     }
-    return count;
+    return count; //
 }
 int main()
 {
