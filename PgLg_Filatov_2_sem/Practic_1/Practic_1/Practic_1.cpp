@@ -142,7 +142,7 @@ void prac_0()
     DrawLineWithSections();
     Output(1);
     DrawLineWithSections();
-    Output(2);
+    Output(2); 
     DrawLineWithSections();
     Output(3);
     DrawLine();
@@ -157,20 +157,21 @@ int IntLength(int number) //возвращает длину числа
         number = number / 10;
         count++;
     }
-    return count;
+    return count; //
 }
 int main()
 {
     SetConsoleCP(1251); //rus
     SetConsoleOutputCP(1251); //rus
-    cout << "Введите количество строк таблицы: ";
     int lines_table;
+    cout << "Введите количество строк таблицы: ";
     cin >> lines_table;
+    while (cin.fail() || lines_table < 1) { cin.clear(); cin.ignore(2000, '\n'); cout << "Ошибка ввода. Введите количество строк таблицы: "; cin >> lines_table; }
     int flag[10][1];
     int minmonth = 30, maxmonth = 0, i_min, i_max; char uslovie_1;
 usl1:cout << "Выполнить код согласно условию 1-ой практики, вариант 3? (y/n) \n Условие: Поменять местами записи (элементы массива структур), содержащие минимальный и максимальный номер месяца даты" << endl;
     cin >> uslovie_1;
-    if (uslovie_1 != 'y' and uslovie_1 != 'n') { goto usl1; }
+    if (uslovie_1 != 'y' && uslovie_1 != 'n') { goto usl1; }
     struct Record Table[10];
     for (int i = 0; i < lines_table; i++) // ввод
     {
@@ -181,25 +182,30 @@ usl1:cout << "Выполнить код согласно условию 1-ой �
         cin >> Table[i].Company;
         cout << "Кол-во составляющих: ";
         cin >> Table[i].Parts;
+        while (cin.fail() || Table[i].Parts < 1) { cin.clear(); cin.ignore(2000, '\n'); cout << "Ошибка ввода. Количество сост. частей: "; cin >> Table[i].Parts; }
         cout << "Цена: ";
         cin >> Table[i].Price;
+        while (cin.fail() || Table[i].Price < 1) { cin.clear(); cin.ignore(2000, '\n'); cout << "Ошибка ввода. Цена ($): "; cin >> Table[i].Price; }
     d1:cout << "День: ";
         cin >> Table[i].RDate.Day;
+        while (cin.fail() || !(Table[i].RDate.Day > 0 && Table[i].RDate.Day < 32)) { cin.clear(); cin.ignore(2000, '\n'); cout << "Ошибка ввода. День: "; cin >> Table[i].RDate.Day; }
         count = IntLength(Table[i].RDate.Day);
         if (count == 1) { flag[i][0] = 1; }
-        if (count != 2 and count != 1 ) { count = 0; goto d1; }
+        //if (count != 2 and count != 1 ) { count = 0; goto d1; }
     d2:cout << "Месяц: ";
         cin >> Table[i].RDate.Month;
+        while (cin.fail() || !(Table[i].RDate.Month > 0 && Table[i].RDate.Month < 13)) { cin.clear(); cin.ignore(2000, '\n'); cout << "Ошибка ввода. Месяц: "; cin >> Table[i].RDate.Month; }
         count = IntLength(Table[i].RDate.Month);
-        if (Table[i].RDate.Month < 1 or Table[i].RDate.Month > 12) { goto d2; }
+        //if (Table[i].RDate.Month < 1 or Table[i].RDate.Month > 12) { goto d2; }
         if (count == 1) { flag[i][1] = 1; }
-        if (count != 2 and count != 1) { count = 0; goto d2; }
+        //if (count != 2 and count != 1) { count = 0; goto d2; }
         if (Table[i].RDate.Month < minmonth) { minmonth = Table[i].RDate.Month; i_min = i; }
         if (Table[i].RDate.Month > maxmonth) { maxmonth = Table[i].RDate.Month; i_max = i; }
     d3:cout << "Год: ";
         cin >> Table[i].RDate.Year;
-        count = IntLength(Table[i].RDate.Year);
-        if (count != 4) { count = 0; goto d3; }
+        while (cin.fail() || !(Table[i].RDate.Year > 1900)) { cin.clear(); cin.ignore(2000, '\n'); cout << "Ошибка ввода. Год: "; cin >> Table[i].RDate.Year; }
+        //count = IntLength(Table[i].RDate.Year);
+        //if (count != 4) { count = 0; goto d3; }
     }
     DrawLine();
     Preset();
