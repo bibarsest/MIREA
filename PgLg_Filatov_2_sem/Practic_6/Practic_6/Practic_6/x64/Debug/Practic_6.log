@@ -1,0 +1,16 @@
+﻿  Practic_6.cpp
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(315,5): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(671,24): warning C4477: "fscanf_s": в строке форматирования "%s" требуется аргумент типа "unsigned int", но вариативный аргумент "2" имеет тип "unsigned __int64"
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(671,24): message : этот аргумент используется в качестве размера буфера
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(671,24): warning C4477: "fscanf_s": в строке форматирования "%s" требуется аргумент типа "unsigned int", но вариативный аргумент "4" имеет тип "unsigned __int64"
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(671,24): message : этот аргумент используется в качестве размера буфера
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(887,24): warning C4477: "fscanf_s": в строке форматирования "%s" требуется аргумент типа "unsigned int", но вариативный аргумент "2" имеет тип "unsigned __int64"
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(887,24): message : этот аргумент используется в качестве размера буфера
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(887,24): warning C4477: "fscanf_s": в строке форматирования "%s" требуется аргумент типа "unsigned int", но вариативный аргумент "4" имеет тип "unsigned __int64"
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(887,24): message : этот аргумент используется в качестве размера буфера
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(903,28): warning C4477: "fscanf_s": в строке форматирования "%s" требуется аргумент типа "unsigned int", но вариативный аргумент "2" имеет тип "unsigned __int64"
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(903,28): message : этот аргумент используется в качестве размера буфера
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(903,28): warning C4477: "fscanf_s": в строке форматирования "%s" требуется аргумент типа "unsigned int", но вариативный аргумент "4" имеет тип "unsigned __int64"
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(903,28): message : этот аргумент используется в качестве размера буфера
+C:\Users\mrzem\source\repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\Practic_6\Practic_6.cpp(626): warning C4715: prac_3: значение возвращается не при всех путях выполнения
+  Practic_6.vcxproj -> C:\Users\mrzem\Source\Repos\bibarsest\MIREA\PgLg_Filatov_2_sem\Practic_6\Practic_6\x64\Debug\Practic_6.exe
