@@ -1,6 +1,7 @@
 ﻿// Кузнецов Алексей, БАСО-04-22. Курсовая работа. Вариант 34.
 // 11.04.2023 22:40
 // 15.04.2023 18:45
+// 23.04.2023
 
 #include <iostream>
 using namespace std;
@@ -8,6 +9,8 @@ using namespace std;
 //#include <stdio.h>
 #include <fstream>
 #include <string>
+#include "Session.h"
+
 
 bool Check(string _word) // проверка, есть ли в слове цифры
 {
@@ -21,7 +24,7 @@ bool Check(string _word) // проверка, есть ли в слове циф
 }
 void Clear() // очистка буфера
 {
-    cin.clear(); cin.ignore(40000, '\n'); 
+    cin.clear(); cin.ignore(INT_MAX, '\n'); 
 }
 class Date
 {
@@ -46,22 +49,22 @@ public:
     }
     void SetDate() // ввод с клавиатуры
     {
-    vvod_d:cout << "День: "; cin >> Day;
-        if (Day > 31 or Day < 1)
+        cout << "День: "; cin >> Day;
+        while (cin.fail() || Day > 31 || Day < 1)
         {
-            cout << "Ошибка ввода.\n"; Clear(); goto vvod_d; // очистка буфера в случае неправильного ввода
+            cout << "Ошибка ввода. День [1-31]: "; Clear(); cin >> Day; // очистка буфера в случае неправильного ввода
         }
         Clear(); // очистка буфера
-    vvod_m:cout << "Месяц: "; cin >> Month;
-        if (Month > 12 or Month < 1)
+        cout << "Месяц: "; cin >> Month;
+        while (cin.fail() || Month > 12 || Month < 1)
         {
-            cout << "Ошибка ввода.\n"; Clear(); goto vvod_m; // очистка буфера в случае неправильного ввода
+            cout << "Ошибка ввода. Месяц [1-12]: "; Clear(); cin >> Month; // очистка буфера в случае неправильного ввода
         }
         Clear(); // очистка буфера
-    vvod_y:cout << "Год: "; cin >> Year;
-        if (Year < 1900 or Year > 2023)
+        cout << "Год: "; cin >> Year;
+        while (cin.fail() || Year < 1900 || Year > 2023)
         {
-            cout << "Ошибка ввода.\n"; Clear(); goto vvod_y; // очистка буфера в случае неправильного ввода
+            cout << "Ошибка ввода. Год [1900-2023]: "; Clear(); cin >> Year; // очистка буфера в случае неправильного ввода
         }
         Clear(); // очистка буфера
     }
@@ -115,7 +118,9 @@ class Student
     int EnrollmentYear; // Год поступления
     string Institute, Department, Group, RecordBook; // Институт, кафедра, группа, номер зачетной книжки (шифр)
     string Sex; // Пол. м = мужчина, ж = женщина
-
+    int numberofSessions, numberofSubjects, maxnumberofSubjects = -10;;
+    Session **Sessions = new Session*[numberofSessions];
+    
 public:
     Student() // конструктор по умолчанию
     {
@@ -143,26 +148,44 @@ public:
 
     void SetStudent() // ввод с клавиатуры
     {
-    INPUT_LASTNAME:cout << "Фамилия: "; cin >> LastName;
-        if (!(Check(LastName))) { cout << "Ошибка ввода. Фамилия не должна содержать цифр. "; goto INPUT_LASTNAME; }
+        cout << "Фамилия: "; cin >> LastName;
+        while (cin.fail() || !(Check(LastName))) { Clear(); cout << "Ошибка ввода. Фамилия не должна содержать цифр. \n>"; cin >> LastName; }
         Clear(); // очистка буфера
-    INPUT_FIRSTNAME:cout << "Имя: "; cin >> FirstName;
-        if (!(Check(FirstName))) { cout << "Ошибка ввода. Имя не должно содержать цифр. "; goto INPUT_FIRSTNAME; }
+        cout << "Имя: "; cin >> FirstName;
+        while (cin.fail() || !(Check(FirstName))) { Clear(); cout << "Ошибка ввода. Имя не должно содержать цифр. \n>"; cin >> FirstName; }
         Clear(); // очистка буфера
-    INPUT_SURNAME:cout << "Отчество: "; cin >> SurName;
-        if (!(Check(SurName))) { cout << "Ошибка ввода. Отчество не должно содержать цифр. "; goto INPUT_SURNAME; }
+        cout << "Отчество: "; cin >> SurName;
+        while (cin.fail() || !(Check(SurName))) { Clear(); cout << "Ошибка ввода. Отчество не должно содержать цифр. \n>"; cin >> SurName; }
         Clear(); // очистка буфера
         cout << "Дата рождения: "; BirthDate.SetDate();
-    INPUT_ENROLLMENT:cout << "Год поступления: "; cin >> EnrollmentYear;
-        if (EnrollmentYear < 1900) { cout << "Ошибка ввода. "; Clear(); goto INPUT_ENROLLMENT; }
-        Clear(); // test 3
-        cout << "Институт: "; cin >> Institute;
-        cout << "Кафедра: "; cin >> Department;
-        cout << "Группа: "; cin >> Group;
-        cout << "Номер зачетной книжки: "; cin >> RecordBook;
-    INPUT_SEX:cout << "Пол (м-мужчина, ж-женщина): "; cin >> Sex;
-        if ((Sex != "м") && (Sex != "ж")) { cout << "Ошибка ввода. "; goto INPUT_SEX; }
+        cout << "Год поступления: "; cin >> EnrollmentYear;
+        while (cin.fail() || EnrollmentYear < 1900) { cout << "Ошибка ввода. Год поступления [>=1900]: "; Clear(); cin >> EnrollmentYear; }
         Clear();
+        cout << "Институт: "; cin >> Institute; Clear();
+        cout << "Кафедра: "; cin >> Department; Clear();
+        cout << "Группа: "; cin >> Group; Clear();
+        cout << "Номер зачетной книжки: "; cin >> RecordBook; Clear();
+        cout << "Пол (м-мужчина, ж-женщина): "; cin >> Sex;
+        while (cin.fail() || ((Sex != "м") && (Sex != "ж"))) { Clear(); cout << "Ошибка ввода. Пол [м/ж]: "; cin >> Sex; }
+        Clear();
+        cout << "Кол-во сессий [1-10]: "; cin >> numberofSessions;
+        while (cin.fail() || numberofSessions < 1 || numberofSessions > 10) { cout << "Ошибка ввода. Кол-во сессий [1-10]: "; Clear(); cin >> numberofSessions; }
+        Clear();
+        for (int i = 0; i < numberofSessions; i++)
+        {
+            cout << "Кол-во предметов для сессии №" << i + 1 << " [1-10]: "; cin >> numberofSubjects;
+            while (cin.fail() || numberofSubjects < 1 || numberofSubjects > 10) { cout << "Ошибка ввода. Кол-во предметов [1-10]: "; Clear(); cin >> numberofSubjects; }
+            Clear();
+            if (numberofSubjects > maxnumberofSubjects) maxnumberofSubjects = numberofSubjects;
+            Sessions[i] = new Session[numberofSubjects];
+            for (int j = 0; j < numberofSubjects; j++)
+            {
+                cout << "Предмет №" << j + 1 << ": "; cin >> Sessions[i][j].subject; Clear();
+                cout << "Оценка №" << j + 1 << ": "; cin >> Sessions[i][j].mark;
+                while (cin.fail() || Sessions[i][j].mark < 1 || Sessions[i][j].mark > 5) { cout << "Ошибка ввода. Оценка: [1-5]: "; Clear(); cin >> Sessions[i][j].mark; }
+                Clear();
+            }
+        }
     }
 
     //void InputInFile()
@@ -193,23 +216,27 @@ public:
 
     void InputInFile(const char _filename[])
     {
-        string choice;
-        input_choice:cout << "Введенные данные: " << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " "
-            << BirthDate.GetInfo("Month") << " " << BirthDate.GetInfo("Year") << " " << EnrollmentYear << " "
-            << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
-        cout << "Хотите записать данные в файл?\n 1 - Да.\n 0 - Нет." << endl;
-        cin >> choice;
-        if (choice == "1")
+        string choice = "z";
+        while (cin.fail() || (choice != "1" && choice != "0"))
         {
-            ofstream file;
-            file.open(_filename, ios::app);
-            file << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " "
+            cout << "Введенные данные: " << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " "
                 << BirthDate.GetInfo("Month") << " " << BirthDate.GetInfo("Year") << " " << EnrollmentYear << " "
                 << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
-            file.close();
+            cout << "Хотите записать данные в файл?\n 1 - Да.\n 0 - Нет.\n> ";
+            cin >> choice;
+            if (choice == "1")
+            {
+                ofstream file;
+                file.open(_filename, ios::app);
+                file << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " "
+                    << BirthDate.GetInfo("Month") << " " << BirthDate.GetInfo("Year") << " " << EnrollmentYear << " "
+                    << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
+                file.close();
+            }
+            if (choice == "0") { cout << "Данные не записаны. " << endl; }
+            if (choice != "1" && choice != "0") { Clear(); system("cls"); cout << "Ошибка ввода. " << endl; }
         }
-        if (choice == "0") { cout << "Данные не записаны. " << endl; }
-        if (choice != "1" && choice != "0") { cout << "Ошибка ввода. " << endl; goto input_choice; }
+        Clear();
     }
     void OutputFromFile(const char _filename[])
     {
@@ -301,6 +328,14 @@ public:
     {
         cout << LastName << " " << FirstName << " " << SurName << " "; 
         BirthDate.PrintDate(); cout << " " << EnrollmentYear << " " << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
+        for (int i = 0; i < numberofSessions; i++)
+        {
+            for (int j = 0; (j < maxnumberofSubjects) && (Sessions[i][j].mark < 6) && (Sessions[i][j].mark > 0); j++)
+            {
+                cout << Sessions[i][j].subject << ": " << Sessions[i][j].mark << "\t";
+            }
+            cout << endl;
+        }
     }
     ~Student() { ; } // деструктор
 };
@@ -314,13 +349,14 @@ int main()
     fclose(file);*/
     int choice;
 start:cout << "Выберите операцию из нижеперечисленных. \n 1. Добавить запись о студенте в файл.\n 2. Отобразить данные о выбранном студенте.\n 3. Изменить данные студента.\n";
-    cout << " 4. Удалить данные студента.\n 5. Выполнить ...задание...\n 6. Выход из программы" << endl;
-choice_input:cout << "Выберите операцию: ";
+    cout << " 4. Удалить данные студента.\n 5. Выполнить ...задание...\n 0. Выход из программы" << endl;
+    cout << "Выберите операцию: ";
     cin >> choice;
-    if (!(choice>0 && choice<7)) // проверка на допустимость значения
+    while (cin.fail() || choice < 0 || choice > 5) // проверка на допустимость значения
     {
-        cout << "Ошибка ввода.\n"; Clear(); goto choice_input; // очистка буфера в случае неправильного ввода и возврат к началу ввода
+        cout << "Ошибка ввода. Выберите операцию [0-5]: "; Clear(); cin >> choice; // очистка буфера в случае неправильного ввода и возврат к началу ввода
     }
+    Clear();
     //cout << endl << choice;
     Student A1; A1.SetStudent("zhemerikin", "max", "alexeevich", { 25,10,2004 }, 2022, "Кибербезопасности", "КБ-1", "БАСО-04-22", "22Б034", "м");
     //A1.PrintStudent();
@@ -341,6 +377,7 @@ choice_input:cout << "Выберите операцию: ";
     switch (choice) 
     {
     case 1:
+        system("cls");
         cout << "Добавить запись о студенте: " << endl;
         InputStudent.SetStudent(); InputStudent.InputInFile("DB.txt");
         system("pause");
@@ -348,24 +385,34 @@ choice_input:cout << "Выберите операцию: ";
         goto start;
         break;
     case 2:
+        system("cls");
         OutputStudent.OutputFromFile("DB.txt",2);
         system("pause");
         system("cls");
         goto start;
         break;
     case 3:
+        system("cls");
+
+        system("pause");
+        system("cls");
         goto start;
         break;
     case 4:
+        system("cls");
         OutputStudent.DeleteInfo("DB.txt");
         system("pause");
         system("cls");
         goto start;
         break;
     case 5:
+        system("cls");
+
+        system("pause");
+        system("cls");
         goto start;
         break;
-    case 6:
+    case 0:
         //goto start;
         return 0;
         break;
