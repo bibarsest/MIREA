@@ -983,6 +983,41 @@ void prac_6()
     //delete[]pDT;
 }
 
+void prac_7()
+{
+    
+    class A
+    {
+    public: void f() { cout << "A\n"; }
+          A() { cout << "Constructor A\n"; }
+    };
+    class C : public virtual A
+    {
+    public: void f() { cout << "C\n"; }
+          C() { cout << "Constructor C\n"; }
+    };
+    class B : public virtual A, public virtual C
+    {
+    public: void f() { cout << "B\n"; }
+          B() { cout << "Constructor B\n"; }
+    };
+    class D : public virtual B
+    {
+    public: void f() { cout << "D\n"; }
+          D() { cout << "Constructor D\n"; }
+    };
+    class E : public virtual C, public virtual D
+    {
+    public: void f() { cout << "E\n"; }
+          E() { cout << "Constructor E\n"; }
+    };
+    class F : virtual public D, public virtual E
+    {
+        ;
+    };
+    F Object; Object.f();
+}
+
 int menu();
 //int isValidInt(string num);
 
@@ -1009,6 +1044,7 @@ int menu()
         cout << "   4. Практическая №4. Файлы." << endl;
         cout << "   5. Практическая №5. Классы и объекты." << endl;
         cout << "   6. Практическая №6. Наследование и друзья." << endl;
+        cout << "   7. Практическая №7. Виртуальные базовые классы." << endl;
         cout << "   0. Завершение работы программы" << endl;
         cout << "> ";
         //cin >> sMenu;
@@ -1018,10 +1054,10 @@ int menu()
         {
             //cout << "Введите ответ: ";
             cin >> myMenu;
-                if (cin.fail() || !(myMenu >= 0 && myMenu <= 6))
+                if (cin.fail() || !(myMenu >= 0 && myMenu <= 7))
                 {
                     Clear();
-                    cout << "Ошибка ввода. Допустимая область значений [0-6]\n> ";
+                    cout << "Ошибка ввода. Допустимая область значений [0-7]\n> ";
                 }
                 else myMenu_input_is_active = false;
         }
@@ -1036,6 +1072,7 @@ int menu()
         case 4: prac_4(); system("pause"); break;
         case 5: prac_5(); system("pause"); break;
         case 6: prac_6(); system("pause"); break;
+        case 7: prac_7(); system("pause"); break;
         case 0: Menu_is_active = false; break;
         default: cout << "Ошибка ввода. " << endl; break;
         }
