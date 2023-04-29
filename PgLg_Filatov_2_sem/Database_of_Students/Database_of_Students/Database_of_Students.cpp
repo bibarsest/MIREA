@@ -8,6 +8,7 @@ using namespace std;
 #include <windows.h>
 //#include <stdio.h>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include "Session.h"
 
@@ -118,8 +119,9 @@ class Student
     int EnrollmentYear; // Год поступления
     string Institute, Department, Group, RecordBook; // Институт, кафедра, группа, номер зачетной книжки (шифр)
     string Sex; // Пол. м = мужчина, ж = женщина
-    int numberofSessions, numberofSubjects, maxnumberofSubjects = -10;;
-    Session **Sessions = new Session*[numberofSessions];
+    int numberofSessions, numberofSubjects, maxnumberofSubjects = -10;
+    //Session **Sessions = new Session*[numberofSessions];
+    //for (int i = 0; i < numberofSessions; i++) { Sessions[i] = new Session[numberofSubjects] };
     
 public:
     Student() // конструктор по умолчанию
@@ -168,24 +170,27 @@ public:
         cout << "Пол (м-мужчина, ж-женщина): "; cin >> Sex;
         while (cin.fail() || ((Sex != "м") && (Sex != "ж"))) { Clear(); cout << "Ошибка ввода. Пол [м/ж]: "; cin >> Sex; }
         Clear();
-        cout << "Кол-во сессий [1-10]: "; cin >> numberofSessions;
-        while (cin.fail() || numberofSessions < 1 || numberofSessions > 10) { cout << "Ошибка ввода. Кол-во сессий [1-10]: "; Clear(); cin >> numberofSessions; }
-        Clear();
-        for (int i = 0; i < numberofSessions; i++)
-        {
-            cout << "Кол-во предметов для сессии №" << i + 1 << " [1-10]: "; cin >> numberofSubjects;
-            while (cin.fail() || numberofSubjects < 1 || numberofSubjects > 10) { cout << "Ошибка ввода. Кол-во предметов [1-10]: "; Clear(); cin >> numberofSubjects; }
-            Clear();
-            if (numberofSubjects > maxnumberofSubjects) maxnumberofSubjects = numberofSubjects;
-            Sessions[i] = new Session[numberofSubjects];
-            for (int j = 0; j < numberofSubjects; j++)
-            {
-                cout << "Предмет №" << j + 1 << ": "; cin >> Sessions[i][j].subject; Clear();
-                cout << "Оценка №" << j + 1 << ": "; cin >> Sessions[i][j].mark;
-                while (cin.fail() || Sessions[i][j].mark < 1 || Sessions[i][j].mark > 5) { cout << "Ошибка ввода. Оценка: [1-5]: "; Clear(); cin >> Sessions[i][j].mark; }
-                Clear();
-            }
-        }
+        //cout << "Кол-во сессий [1-10]: "; cin >> numberofSessions;
+        //while (cin.fail() || numberofSessions < 1 || numberofSessions > 10) { cout << "Ошибка ввода. Кол-во сессий [1-10]: "; Clear(); cin >> numberofSessions; }
+        //Clear();
+        //Session** Sessions = new Session * [numberofSessions];
+        ////for (int i = 0; i < numberofSessions; i++) { Sessions[i] = new Session[numberofSubjects]; }
+
+        //for (int i = 0; i < numberofSessions; i++)
+        //{
+        //    cout << "Кол-во предметов для сессии №" << i + 1 << " [1-10]: "; cin >> numberofSubjects;
+        //    while (cin.fail() || numberofSubjects < 1 || numberofSubjects > 10) { cout << "Ошибка ввода. Кол-во предметов [1-10]: "; Clear(); cin >> numberofSubjects; }
+        //    Clear();
+        //    if (numberofSubjects > maxnumberofSubjects) maxnumberofSubjects = numberofSubjects;
+        //    Sessions[i] = new Session[numberofSubjects];
+        //    for (int j = 0; j < numberofSubjects; j++)
+        //    {
+        //        cout << "Предмет №" << j + 1 << ": "; cin >> Sessions[i][j].subject; Clear();
+        //        cout << "Оценка №" << j + 1 << ": "; cin >> Sessions[i][j].mark;
+        //        while (cin.fail() || Sessions[i][j].mark < 1 || Sessions[i][j].mark > 5) { cout << "Ошибка ввода. Оценка: [1-5]: "; Clear(); cin >> Sessions[i][j].mark; }
+        //        Clear();
+        //    }
+        //}
     }
 
     //void InputInFile()
@@ -216,12 +221,54 @@ public:
 
     void InputInFile(const char _filename[])
     {
+        cout << "Кол-во сессий [1-10]: "; cin >> numberofSessions;
+        while (cin.fail() || numberofSessions < 1 || numberofSessions > 10) { cout << "Ошибка ввода. Кол-во сессий [1-10]: "; Clear(); cin >> numberofSessions; }
+        Clear();
+        Session** Sessions = new Session * [numberofSessions];
+        //for (int i = 0; i < numberofSessions; i++) { Sessions[i] = new Session[numberofSubjects]; }
+
+        for (int i = 0; i < numberofSessions; i++)
+        {
+            cout << "Кол-во предметов для сессии №" << i + 1 << " [1-10]: "; cin >> numberofSubjects;
+            while (cin.fail() || numberofSubjects < 1 || numberofSubjects > 10) { cout << "Ошибка ввода. Кол-во предметов [1-10]: "; Clear(); cin >> numberofSubjects; }
+            Clear();
+            if (numberofSubjects > maxnumberofSubjects) maxnumberofSubjects = numberofSubjects;
+            Sessions[i] = new Session[10]();
+            for (int j = 0; j < numberofSubjects; j++)
+            {
+                cout << "Предмет №" << j + 1 << ": "; cin >> Sessions[i][j].subject; Clear();
+                cout << "Оценка №" << j + 1 << " [1-5, з - зачет, н - незачет]: "; cin >> Sessions[i][j].mark;
+                while (cin.fail() /*|| stoi(Sessions[i][j].mark) < 1 || stoi(Sessions[i][j].mark) > 5*/ || (Sessions[i][j].mark != "з" && Sessions[i][j].mark != "н" &&
+                    Sessions[i][j].mark != "5" && Sessions[i][j].mark != "4" && Sessions[i][j].mark != "3" && Sessions[i][j].mark != "2" && Sessions[i][j].mark != "1"))
+                { cout << "Ошибка ввода. Оценка: [1-5, з - зачет, н - незачет]: "; Clear(); cin >> Sessions[i][j].mark; }
+                Clear();
+            }
+        }
         string choice = "z";
         while (cin.fail() || (choice != "1" && choice != "0"))
         {
             cout << "Введенные данные: " << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " "
                 << BirthDate.GetInfo("Month") << " " << BirthDate.GetInfo("Year") << " " << EnrollmentYear << " "
                 << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
+            //Session** Sessions = new Session * [numberofSessions];
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                cout << "----------СЕССИЯ №" << i+1 << "----------" << endl;
+                //Sessions[i] = new Session[numberofSubjects];
+                for (int j = 0; j < maxnumberofSubjects; j++)
+                {
+                    if (Sessions[i][j].mark == "#") break;
+                    cout << Sessions[i][j].subject << ": "; 
+                    if (Sessions[i][j].mark == "з" || Sessions[i][j].mark == "н")
+                    {
+                        if (Sessions[i][j].mark == "з") cout << "зачёт ";
+                        if (Sessions[i][j].mark == "н") cout << "незачёт ";
+                    }
+                    else  if (stoi(Sessions[i][j].mark)>0 && stoi(Sessions[i][j].mark)<6) cout << Sessions[i][j].mark << " ";
+                }
+                cout << endl;
+            }
+
             cout << "Хотите записать данные в файл?\n 1 - Да.\n 0 - Нет.\n> ";
             cin >> choice;
             if (choice == "1")
@@ -230,7 +277,19 @@ public:
                 file.open(_filename, ios::app);
                 file << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " "
                     << BirthDate.GetInfo("Month") << " " << BirthDate.GetInfo("Year") << " " << EnrollmentYear << " "
-                    << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
+                    << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << " " <<
+                    numberofSessions << " " << maxnumberofSubjects << " ";
+                for (int i = 0; i < numberofSessions; i++)
+                {
+                    for (int j = 0; j < maxnumberofSubjects; j++)
+                    {
+                        if (Sessions[i][j].mark == "#") break;
+                        file << Sessions[i][j].subject << " " << Sessions[i][j].mark << " ";
+                    }
+                    file << "| ";
+                    //cout << endl;
+                }
+                file << endl;
                 file.close();
             }
             if (choice == "0") { cout << "Данные не записаны. " << endl; }
@@ -238,7 +297,7 @@ public:
         }
         Clear();
     }
-    void OutputFromFile(const char _filename[])
+    /*void OutputFromFile(const char _filename[])
     {
         ifstream file;
         string line, searchline;
@@ -252,19 +311,111 @@ public:
             }
         }
         file.close();
-    }
-    void OutputFromFile(const char _filename[], int i)
+    }*/
+    void OutputFromFile(const char _filename[])
     {
         ifstream file;
-        string line, searchline;
+        string searchline, bufer;
+        
         cout << "Введите номер зачетной книжки студента: "; cin >> searchline;
         file.open(_filename, ios::in);
         while (file >> LastName >> FirstName >> SurName >> BirthDate.Day >> BirthDate.Month >> BirthDate.Year >>
-            EnrollmentYear >> Institute >> Department >> Group >> RecordBook >> Sex)
+            EnrollmentYear >> Institute >> Department >> Group >> RecordBook >> Sex >> numberofSessions >> maxnumberofSubjects)
         {
+            Session** Sessions = new Session * [numberofSessions];
+            for (int i=0; i<numberofSessions; i++)
+            {
+                Sessions[i] = new Session[maxnumberofSubjects];
+            }
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                for (int j = 0; j < maxnumberofSubjects+1; j++)
+                {
+                    file >> bufer;
+                    if (bufer == "|") break;
+                    Sessions[i][j].subject = bufer;
+                    file >> Sessions[i][j].mark;
+                }
+            }
             if (RecordBook.find(searchline) != string::npos)
             {
+
                 PrintStudent();
+                for (int i = 0; i < numberofSessions; i++)
+                {
+                    cout << "----------СЕССИЯ №" << i + 1 << "----------" << endl;
+                    for (int j = 0; j < maxnumberofSubjects; j++)
+                    {
+                        if (Sessions[i][j].mark == "#") break;
+                        cout << Sessions[i][j].subject << ": ";
+                        if (Sessions[i][j].mark == "з" || Sessions[i][j].mark == "н")
+                        {
+                            if (Sessions[i][j].mark == "з") cout << "зачёт ";
+                            if (Sessions[i][j].mark == "н") cout << "незачёт ";
+                        }
+                        else cout << Sessions[i][j].mark << " ";
+                    }
+                    cout << endl;
+                }
+
+            }
+            
+        }
+        file.close();
+    }
+    void OutputFromFile(const char _filename[], int o)
+    {
+        ifstream file;
+        string line, searchline, bufer;
+        cout << "Введите номер зачетной книжки студента: "; cin >> searchline;
+        file.open(_filename, ios::in);
+        while (getline(file, line))
+        {
+            stringstream ss(line);
+            ss >> LastName >> FirstName >> SurName >> BirthDate.Day >> BirthDate.Month >> BirthDate.Year >>
+                EnrollmentYear >> Institute >> Department >> Group >> RecordBook >> Sex >> numberofSessions >> maxnumberofSubjects;
+
+            Session** Sessions = new Session * [numberofSessions];
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                Sessions[i] = new Session[maxnumberofSubjects];
+            }
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                for (int j = 0; j < maxnumberofSubjects+1; j++)
+                {
+                    ss >> bufer;
+                    if (bufer == "|") break;
+                    //if (bufer == "|") continue;
+                    //if (bufer == "|" && numberofSessions == maxnumberofSubjects) ss >> bufer;
+                    //if (bufer == "|" && numberofSessions != maxnumberofSubjects) break;
+                    //if (bufer == "|" && j == maxnumberofSubjects-1) ss >> bufer;
+                    //if (bufer == "|" && j != maxnumberofSubjects-1) continue;
+                    Sessions[i][j].subject = bufer;
+                    ss >> Sessions[i][j].mark;
+                }
+            }
+            if (RecordBook.find(searchline) != string::npos)
+            {
+
+                PrintStudent();
+                for (int i = 0; i < numberofSessions; i++)
+                {
+                    
+                    cout << "----------СЕССИЯ №" << i + 1 << "----------" << endl;
+                    for (int j = 0; j < maxnumberofSubjects; j++)
+                    {
+                        if (Sessions[i][j].mark == "#") break;
+                        cout << Sessions[i][j].subject << ": ";
+                        if (Sessions[i][j].mark == "з" || Sessions[i][j].mark == "н")
+                        {
+                            if (Sessions[i][j].mark == "з") cout << "зачёт ";
+                            if (Sessions[i][j].mark == "н") cout << "незачёт ";
+                        }
+                        else cout << Sessions[i][j].mark << " ";
+                    }
+                    cout << endl;
+                }
             }
         }
         file.close();
@@ -272,16 +423,47 @@ public:
     void DeleteInfo(const char _filename[])
     {
         ifstream file;
-        string line, searchline;
+        string bufer, line, searchline;
         int deleting_choice = 0;
         cout << "Введите номер зачетной книжки студента: "; cin >> searchline;
         file.open(_filename, ios::in);
         while (file >> LastName >> FirstName >> SurName >> BirthDate.Day >> BirthDate.Month >> BirthDate.Year >>
-            EnrollmentYear >> Institute >> Department >> Group >> RecordBook >> Sex)
+            EnrollmentYear >> Institute >> Department >> Group >> RecordBook >> Sex >> numberofSessions >> maxnumberofSubjects )
         {
+            Session** Sessions = new Session * [numberofSessions];
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                Sessions[i] = new Session[maxnumberofSubjects];
+            }
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                for (int j = 0; j < maxnumberofSubjects + 1; j++)
+                {
+                    file >> bufer;
+                    if (bufer == "|") break;
+                    Sessions[i][j].subject = bufer;
+                    file >> Sessions[i][j].mark;
+                }
+            }
             if (RecordBook.find(searchline) != string::npos)
             {
                 cout << "Выбранные для удаления данные: " << endl; PrintStudent();
+                for (int i = 0; i < numberofSessions; i++)
+                {
+                    cout << "----------СЕССИЯ №" << i + 1 << "----------" << endl;
+                    for (int j = 0; j < maxnumberofSubjects; j++)
+                    {
+                        if (Sessions[i][j].mark == "#") break;
+                        cout << Sessions[i][j].subject << ": ";
+                        if (Sessions[i][j].mark == "з" || Sessions[i][j].mark == "н")
+                        {
+                            if (Sessions[i][j].mark == "з") cout << "зачёт ";
+                            if (Sessions[i][j].mark == "н") cout << "незачёт ";
+                        }
+                        else cout << Sessions[i][j].mark << " ";
+                    }
+                    cout << endl;
+                }
             DELETING_CHOICE_INPUT:cout << "Вы уверены, что хотите удалить данные?\n 1. Удалить.\n 0. Отмена." << endl;
                 cin >> deleting_choice;
                 if (!(deleting_choice >= 0 && deleting_choice <= 1))
@@ -300,15 +482,42 @@ public:
             file.close();
             file.open(_filename, ios::in);
             while (file >> LastName >> FirstName >> SurName >> BirthDate.Day >> BirthDate.Month >> BirthDate.Year >>
-                EnrollmentYear >> Institute >> Department >> Group >> RecordBook >> Sex)
+                EnrollmentYear >> Institute >> Department >> Group >> RecordBook >> Sex >> numberofSessions >> maxnumberofSubjects)
             {
+                Session** Sessions = new Session * [numberofSessions];
+                for (int i = 0; i < numberofSessions; i++)
+                {
+                    Sessions[i] = new Session[maxnumberofSubjects];
+                }
+                for (int i = 0; i < numberofSessions; i++)
+                {
+                    for (int j = 0; j < maxnumberofSubjects + 1; j++)
+                    {
+                        file >> bufer;
+                        if (bufer == "|") break;
+                        Sessions[i][j].subject = bufer;
+                        file >> Sessions[i][j].mark;
+                    }
+                }
                 if (!(RecordBook.find(searchline) != string::npos))
                 {
                     ofstream file_out;
                     file_out.open("DBtemp.txt", ios::app);
                     file_out << LastName << " " << FirstName << " " << SurName << " " << BirthDate.GetInfo("Day") << " "
                         << BirthDate.GetInfo("Month") << " " << BirthDate.GetInfo("Year") << " " << EnrollmentYear << " "
-                        << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
+                        << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << " " << numberofSessions << " "
+                        << maxnumberofSubjects << " ";
+                    for (int i = 0; i < numberofSessions; i++)
+                    {
+                        for (int j = 0; j < maxnumberofSubjects; j++)
+                        {
+                            if (Sessions[i][j].mark == "#") break;
+                            file_out << Sessions[i][j].subject << " " << Sessions[i][j].mark << " ";
+                        }
+                        file_out << "| ";
+                        //cout << endl;
+                    }
+                    file_out << endl;
                     file_out.close();
                 }
             }
@@ -328,14 +537,17 @@ public:
     {
         cout << LastName << " " << FirstName << " " << SurName << " "; 
         BirthDate.PrintDate(); cout << " " << EnrollmentYear << " " << Institute << " " << Department << " " << Group << " " << RecordBook << " " << Sex << endl;
-        for (int i = 0; i < numberofSessions; i++)
-        {
-            for (int j = 0; (j < maxnumberofSubjects) && (Sessions[i][j].mark < 6) && (Sessions[i][j].mark > 0); j++)
-            {
-                cout << Sessions[i][j].subject << ": " << Sessions[i][j].mark << "\t";
-            }
-            cout << endl;
-        }
+        //Session** Sessions = new Session * [numberofSessions];
+        //for (int i = 0; i < numberofSessions; i++)
+        //{
+        //    cout << "----------СЕССИЯ №" << i+1 << "----------" << endl;
+        //    //Sessions[i] = new Session[numberofSubjects];
+        //    for (int j = 0; (j < maxnumberofSubjects) && (Sessions[i][j].mark < 6) && (Sessions[i][j].mark > 0); j++)
+        //    {
+        //        cout << Sessions[i][j].subject << ": " << Sessions[i][j].mark << "\t";
+        //    }
+        //    cout << endl;
+        //}
     }
     ~Student() { ; } // деструктор
 };
@@ -386,7 +598,7 @@ start:cout << "Выберите операцию из нижеперечисле
         break;
     case 2:
         system("cls");
-        OutputStudent.OutputFromFile("DB.txt",2);
+        OutputStudent.OutputFromFile("DB.txt");
         system("pause");
         system("cls");
         goto start;
