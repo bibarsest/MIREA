@@ -4,6 +4,8 @@ using namespace std;
 
 struct Session
 {
-    string subject;
-    int mark;
+    string subject = "#";
+    string mark = "#";
+    Session(){}
+    Session(string subj, string m) : subject(subj), mark(m) {}
 };
