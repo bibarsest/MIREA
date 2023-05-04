@@ -947,10 +947,11 @@ void prac_5()
     {
         R3[i] = new clRecord("KuznetsovTXT.txt", i); cout << "R3[" << i << "] = "; R3[i]->printRecord();
     }
-    //for (int i = 0; i < 3; i++) // очистка памяти. Закомментировал в связи с тем, что, насколько я понял, я удаляю указатели и возникает утечка памяти. Деструктор должен справиться с очисткой.
-    //{
-    //    delete R3[i];
-    //}
+    for (int i = 0; i < 3; i++) // очистка памяти.
+    {
+        delete R3[i];
+    }
+    //delete[] R3; // Ошибка _CrtIsValidHeapPointer(block). Может возникать из-за попытки освободить уже освобожденную память или разрушить объект со стеком, который уже был удален
     clRecord R3_2[3];
     for (int i = 0; i < 3; i++) // считываю строчки из файла и заношу по строчке в объект R3_2[i] (статический массив)
     {
@@ -979,8 +980,9 @@ void prac_6()
     for (int i = 0; i < 4; i++) pDT[i] = new clDateTime(10 + i, 11, 12); //адресы 4-ех объектов
     clDateTime* ppDT; // динамический массив
     ppDT = new clDateTime[4];
+
     for (int i = 0; i < 4; i++) delete pDT[i];
-    //delete[]pDT;
+    delete[] ppDT;
 }
 
 void prac_7()
