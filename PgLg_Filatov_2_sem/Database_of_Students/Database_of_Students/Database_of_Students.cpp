@@ -77,6 +77,11 @@ public:
         file >> Day >> Month >> Year; 
         file.close();
     }
+    friend istream& operator>>(istream& is, Date& dt)
+    {
+        is >> dt.Day >> dt.Month >> dt.Year;
+        return is;
+    }
     int GetDay() { return Day; }
     int GetMonth() { return Month; }
     int GetYear() { return Year; }
@@ -121,6 +126,7 @@ class Student
     string Institute, Department, Group, RecordBook; // Институт, кафедра, группа, номер зачетной книжки (шифр)
     string Sex; // Пол. м = мужчина, ж = женщина
     int numberofSessions, numberofSubjects, maxnumberofSubjects = -10;
+    bool has_three_mark = false;
     //Session **Sessions = new Session*[numberofSessions];
     //for (int i = 0; i < numberofSessions; i++) { Sessions[i] = new Session[numberofSubjects] };
     
@@ -140,6 +146,27 @@ public:
         Institute = _Institute; Department = _Department; Group = _Group; RecordBook = _RecordBook;
         Sex = _Sex;
     }
+    friend ostream& operator<<(ostream& os, Student& st)
+    {
+        os << st.LastName << " " << st.FirstName << " " << st.SurName;
+        if (st.Sex == "м" || st.Sex == "ж")
+        {
+            if (st.Sex == "м") os << ", мужчина";
+            if (st.Sex == "ж") os << ", женщина";
+        }
+        else os << ", пол не определен";
+        os << " | ";
+        os << "Дата рождения: "; st.BirthDate.PrintDate(); os << endl;
+        os << "Год поступления: " << st.EnrollmentYear << " | Институт " << st.Institute << " | Кафедра " << st.Department << endl;
+        os << "Группа " << st.Group << " | Шифр " << st.RecordBook << " " << endl;
+        return os;
+    }
+    friend istream& operator>>(istream& is, Student& st)
+    {
+        is >> st.LastName >> st.FirstName >> st.SurName >> st.BirthDate >> st.EnrollmentYear >> st.Institute >> st.Department >> st.Group >> st.RecordBook >> st.Sex >> st.numberofSessions >> st.maxnumberofSubjects;
+        return is;
+    }
+    void Set_three_mark(bool is_mark) { has_three_mark = is_mark; }
     void SetStudent(string _LastName, string _FirstName, string _SurName, Date _BirthDate, int _EnrollmentYear,
         string _Institute, string _Department, string _Group, string _RecordBook, string _Sex)
     {
@@ -320,6 +347,11 @@ public:
             if (choice == "0") { cout << "Данные не записаны. " << endl; }
             if (choice != "1" && choice != "0") { Clear(); system("cls"); cout << "Ошибка ввода. " << endl; }
         }
+        for (int i = 0; i < numberofSessions; i++)
+        {
+            delete[] Sessions[i];
+        }
+        delete[] Sessions;
         Clear();
     }
     /*void OutputFromFile(const char _filename[])
@@ -385,7 +417,11 @@ public:
                 }
 
             }
-            
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                delete[] Sessions[i];
+            }
+            delete[] Sessions;
         }
         file.close();
     }
@@ -412,11 +448,6 @@ public:
                 {
                     ss >> buffer;
                     if (buffer == "|") break;
-                    //if (bufer == "|") continue;
-                    //if (bufer == "|" && numberofSessions == maxnumberofSubjects) ss >> bufer;
-                    //if (bufer == "|" && numberofSessions != maxnumberofSubjects) break;
-                    //if (bufer == "|" && j == maxnumberofSubjects-1) ss >> bufer;
-                    //if (bufer == "|" && j != maxnumberofSubjects-1) continue;
                     Sessions[i][j].subject = buffer;
                     ss >> Sessions[i][j].mark;
                 }
@@ -443,6 +474,11 @@ public:
                     cout << endl;
                 }
             }
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                delete[] Sessions[i];
+            }
+            delete[] Sessions;
         }
         file.close();
     }
@@ -500,6 +536,11 @@ public:
                 }
                 Clear();
             }
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                delete[] Sessions[i];
+            }
+            delete[] Sessions;
         }
         switch(deleting_choice)
         {
@@ -550,6 +591,11 @@ public:
                     file_out << endl;
                     file_out.close();
                 }
+                for (int i = 0; i < numberofSessions; i++)
+                {
+                    delete[] Sessions[i];
+                }
+                delete[] Sessions;
             }
             file.close();
             remove(_filename);
@@ -806,6 +852,11 @@ public:
                 file_out_other_students << endl;
                 file_out_other_students.close();
             }
+            for (int i = 0; i < numberofSessions; i++)
+            {
+                delete[] Sessions[i];
+            }
+            delete[] Sessions;
         }
         file.close();
         remove(_filename);
@@ -826,6 +877,10 @@ public:
         cout << "Группа " << Group << " | Шифр " << RecordBook << " " << endl;
         
     }
+    string GetSex() { return Sex; }
+    bool Get_three_mark() { return has_three_mark; }
+    int GetNumberofSessions() { return numberofSessions; }
+    int GetMaxNumberofSubjects() { return maxnumberofSubjects; }
     ~Student() { ; } // деструктор
 };
 
@@ -834,25 +889,149 @@ class FileOperations: public Student
 
 };
 
+
+int HowMuchLinesInFile(const char _filename[]);
+class StudentList 
+{
+    struct Node 
+    {
+        Student* student;
+        Node* next;
+    };
+    Node* head;
+public:
+    StudentList() { head = nullptr; }
+    ~StudentList() 
+    {
+        while (head != nullptr) 
+        {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+
+    void AddStudent(Student& student) 
+    {
+        Node* newNode = new Node { &student, nullptr };
+        if (head == nullptr) { head = newNode; }
+        else 
+        {
+            Node* current = head;
+            while (current->next != nullptr) { current = current->next; }
+            current->next = newNode;
+        }
+    }
+
+    void AddStudent(Student* student)
+    {
+        Node* newNode = new Node{ student, nullptr };
+        if (head == nullptr) { head = newNode; }
+        else
+        {
+            Node* current = head;
+            while (current->next != nullptr) { current = current->next; }
+            current->next = newNode;
+        }
+    }
+
+    void AddStudentsFromFile(const char _filename[])
+    {
+        ifstream infile;
+        infile.open(_filename);
+        string buffer;
+        int totallines = HowMuchLinesInFile(_filename), countdown = 0;
+        Student* student = new Student[totallines - 1];
+        while (!infile.eof() && (countdown < totallines - 1)) 
+        {
+
+            for (int k = 0; k < totallines - 1; k++, countdown++)
+            {
+                infile >> student[k];
+                Session** Sessions = new Session * [student[k].GetNumberofSessions()];
+                for (int i = 0; i < student[k].GetNumberofSessions(); i++)
+                {
+                    Sessions[i] = new Session[student[k].GetMaxNumberofSubjects()];
+                    for (int j = 0; j < student[k].GetMaxNumberofSubjects() + 1; j++)
+                    {
+                        infile >> buffer;
+                        if (buffer == "|") break;
+                        Sessions[i][j].subject = buffer;
+                        infile >> Sessions[i][j].mark;
+                        if (Sessions[i][j].mark == "3") student[k].Set_three_mark(true);
+                    }
+                }
+                for (int i = 0; i < student[k].GetNumberofSessions(); i++)
+                {
+                    delete[] Sessions[i];
+                }
+                delete[] Sessions;
+
+                AddStudent(student[k]);
+            }
+        }
+        infile.close();
+        //delete[] student;
+    }
+ 
+    void PrintStudentList()  
+    {
+        for (Node* current = head; current != nullptr; current = current->next) 
+        {
+            current->student->PrintStudent(); cout << endl;
+        }
+    }
+    void PrintStudentList(string _sex)
+    {
+        while (_sex != "м" && _sex != "ж")
+        {
+            cout << "Вывести всех студентов без троек, пол которых [м/ж]: "; cin >> _sex; Clear();
+        }
+        cin.clear();
+        for (Node* current = head; current != nullptr; current = current->next)
+        {
+            if (current->student->GetSex() == _sex && !current->student->Get_three_mark()) { current->student->PrintStudent(); cout << endl;}
+        }
+    }
+    void FreeList()
+    {
+        while (head != nullptr)
+        {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+};
+int HowMuchLinesInFile(const char _filename[])
+{
+    ifstream count_file; int count=0; string line;
+    count_file.open(_filename, ios::in);
+    while (!count_file.eof()) { getline(count_file, line); count++; }
+    count_file.close();
+    return count;
+}
 int main()
 {
     SetConsoleCP(1251); //rus
     SetConsoleOutputCP(1251); //rus
+    //cout << HowMuchLinesInFile("DB.txt");
     //FILE* file;
     /*fopen_s(&file, "DB.txt", "w");
     fclose(file);*/
     int choice;
-start:cout << "Выберите операцию из нижеперечисленных. \n 1. Добавить запись о студенте в файл.\n 2. Отобразить данные о выбранном студенте.\n 3. Изменить данные студента.\n";
-    cout << " 4. Удалить данные студента.\n 5. Выполнить ...задание...\n 0. Выход из программы" << endl;
+start:cout << "Выберите операцию из нижеперечисленных. \n 1. Добавить полную запись о студенте в файл.\n 2. Отобразить все данные о выбранном студенте.\n 3. Изменить данные студента.\n";
+    cout << " 4. Удалить данные студента.\n 5. Распечатать всех студентов, у которых за все время обучения нет ни одной тройки с поиском среди лиц определенного пола (Вариант 34).";
+    cout << "\n 6. Распечатать всех студентов.\n 0. Выход из программы." << endl;
     cout << "Выберите операцию: ";
     cin >> choice;
-    while (cin.fail() || choice < 0 || choice > 5) // проверка на допустимость значения
+    while (cin.fail() || choice < 0 || choice > 6) // проверка на допустимость значения
     {
-        cout << "Ошибка ввода. Выберите операцию [0-5]: "; Clear(); cin >> choice; // очистка буфера в случае неправильного ввода и возврат к началу ввода
+        cout << "Ошибка ввода. Выберите операцию [0-6]: "; Clear(); cin >> choice; // очистка буфера в случае неправильного ввода и возврат к началу ввода
     }
     Clear();
     //cout << endl << choice;
-    Student A1; A1.SetStudent("zhemerikin", "max", "alexeevich", { 25,10,2004 }, 2022, "Кибербезопасности", "КБ-1", "БАСО-04-22", "22Б034", "м");
+    
     //A1.PrintStudent();
     //A1.InputInFile("DB.txt");
     //fopen_s(&file, "DB.txt", "a");
@@ -868,6 +1047,7 @@ start:cout << "Выберите операцию из нижеперечисле
     //cout << "get date B: "; C = B.GetInfo("Day"); cout << C; C = B.GetInfo("Month"); cout << C;
     Student InputStudent;
     Student OutputStudent;
+    StudentList studentList;
     switch (choice) 
     {
     case 1:
@@ -901,7 +1081,18 @@ start:cout << "Выберите операцию из нижеперечисле
         break;
     case 5:
         system("cls");
-
+        studentList.AddStudentsFromFile("DB.txt");
+        studentList.PrintStudentList("test");
+        studentList.FreeList();
+        system("pause");
+        system("cls");
+        goto start;
+        break;
+    case 6:
+        system("cls");
+        studentList.AddStudentsFromFile("DB.txt");
+        studentList.PrintStudentList();
+        studentList.FreeList();
         system("pause");
         system("cls");
         goto start;
