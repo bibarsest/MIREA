@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Student">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABAEAAQEAQBAAQBAQEACQEEBAAAABgggAwgAACAAo=</HashCode>
+      <FileName>Student_bib.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentList">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="StudentList::Node">
+        <TypeIdentifier>
+          <NewMemberFileName>StudentList_bib.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAgAAAAAAAAIAABAAAAAIAAAIAAAEAAAA=</HashCode>
+      <FileName>StudentList_bib.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Date">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABAAJAAAAABAAAAAAAAgAAAAAEAFDAAAAAAAAAA=</HashCode>
+      <FileName>Date_bib.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Session">
+    <Position X="2.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Session.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
