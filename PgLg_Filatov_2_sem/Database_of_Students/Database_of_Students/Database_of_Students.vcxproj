@@ -129,6 +129,17 @@
   <ItemGroup>
     <ClCompile Include="Database_of_Students.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Crypt_bib.h" />
+    <ClInclude Include="Date_bib.h" />
+    <ClInclude Include="Functions_bib.h" />
+    <ClInclude Include="Session.h" />
+    <ClInclude Include="StudentList_bib.h" />
+    <ClInclude Include="Student_bib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
