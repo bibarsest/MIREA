@@ -57,40 +57,40 @@ int menu()
         switch (choice)
         {
         case 1:
-            system("cls"); //Decrypt();
+            system("cls"); 
             cout << "Добавить запись о студенте: " << endl;
             OperatingStudent.SetStudent(); OperatingStudent.InputInFile("DB.txt");
             system("pause");
-            firstcall = true; choice = 10; //Crypt();
+            firstcall = true; choice = 10; 
             break;
         case 2:
-            system("cls"); //Decrypt();
+            system("cls"); 
             OperatingStudent.OutputFromFile("DB.txt");
             system("pause");
-            firstcall = true; choice = 10; //Crypt();
+            firstcall = true; choice = 10; 
             break;
         case 3:
-            system("cls"); //Decrypt();
+            system("cls"); 
             OperatingStudent.ChangeInfo("DB.txt");
             system("pause");
-            firstcall = true; choice = 10; //Crypt();
+            firstcall = true; choice = 10; 
             break;
         case 4:
-            system("cls"); //Decrypt();
+            system("cls"); 
             OperatingStudent.DeleteInfo("DB.txt");
             system("pause");
-            firstcall = true; choice = 10; //Crypt();
+            firstcall = true; choice = 10; 
             break;
         case 5:
-            system("cls"); //Decrypt();
+            system("cls"); 
             studentList.AddStudentsFromFile("DB.txt");
             studentList.PrintStudentList("test");
             studentList.FreeList();
             system("pause");
-            firstcall = true; choice = 10; //Crypt();
+            firstcall = true; choice = 10; 
             break;
         case 6:
-            system("cls"); //Decrypt();
+            system("cls"); 
             studentList.AddStudentsFromFile("DB.txt");
             studentList.PrintStudentList();
             studentList.FreeList();

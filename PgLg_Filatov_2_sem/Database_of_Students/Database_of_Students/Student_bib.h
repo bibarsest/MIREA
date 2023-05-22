@@ -637,12 +637,7 @@ public:
                     file_out << endl;
                     file_out.close();
                 }
-                //if (choice == 0) cout << "Изменения не сохранены" << endl;
-                /*for (int i = 0; i < numberofSessions; i++) //ОШИБКА
-                {
-                    delete[] Sessions[i];
-                }
-                delete[] Sessions;*/
+                
             }
             if (!(RecordBook.find(searchline) != string::npos))
             {
@@ -669,11 +664,7 @@ public:
                 }
                 delete[] Sessions;
             }
-            /*for (int i = 0; i < numberofSessions; i++)
-            {
-                delete[] Sessions[i];
-            }
-            delete[] Sessions;*/
+            
         }
         file.close();
         remove(_filename);
