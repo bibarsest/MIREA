@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <windows.h>
+#include "template_list_bib.h"
+//#include "clDate_bib.h"
 using namespace std;
 
 void Clear() { cin.clear(); cin.ignore(INT_MAX, '\n'); }
@@ -125,8 +127,37 @@ public:
     }
 };
 
+//template <class infoT> // перенести в заголовочный файл
+//class clList
+//{
+//    struct Node
+//    {
+//        infoT info;
+//        Node* next;
+//    };
+//    Node* head;
+//public:
+//    clList();
+//    ~clList();
+//};
+
+//class clSession
+//{
+//    string Name;
+//    clDate Date;
+//    string Mark;
+//    string Teacher;
+//    clSession() { Mark = "#"; }
+//};
+
 class clStudent
 {
+    /*struct Node
+    {
+        clSession* Session;
+        Node* next;
+    };
+    Node* head;*/
 protected:
     string LastName;
     string FirstName;
