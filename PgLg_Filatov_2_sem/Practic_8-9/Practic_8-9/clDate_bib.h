@@ -1,4 +1,9 @@
 #pragma once
+#include <iostream>
+using namespace std;
+
+void Clear() { cin.clear(); cin.ignore(INT_MAX, '\n'); }
+
 class clDate
 {
     int Day;
