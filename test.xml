@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<School>
+    <Student>
+        <ID>001</ID>
+        <Name>bibarsest</Name>
+        <Age>20</Age>
+        <Major>Cybersecurity Specialist</Major>
+        <Courses>
+            <Course>
+                <CourseID>CS101</CourseID>
+                <CourseName>Introduction to Programming</CourseName>
+                <Credits>3</Credits>
+                <Grade>A</Grade>
+            </Course>
+            <Course>
+                <CourseID>MATH101</CourseID>
+                <CourseName>Calculus I</CourseName>
+                <Credits>4</Credits>
+                <Grade>B+</Grade>
+            </Course>
+            <Course>
+                <CourseID>ENG101</CourseID>
+                <CourseName>English Composition</CourseName>
+                <Credits>3</Credits>
+                <Grade>A-</Grade>
+            </Course>
+        </Courses>
+    </Student>
+</School>
