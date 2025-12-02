@@ -1,0 +1,66 @@
+#!/bin/bash
+
+TARGET_URL="${1:-33.57.84.200}"
+RESULTS_FILE="${2:-results_nikto.txt}"
+
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+WHITE='\033[0;37m'
+
+NIKTO_LOG="/tmp/nikto_output_$$.txt"
+
+log_info() {
+    echo -e "${BLUE}[NIKTO-INFO]${WHITE} $1" | tee -a $RESULTS_FILE
+}
+
+log_success() {
+    echo -e "${GREEN}[NIKTO-SUCCESS]${WHITE} $1" | tee -a $RESULTS_FILE
+}
+
+log_error() {
+    echo -e "${BLUE}[NIKTO-ERROR]${WHITE} $1" | tee -a $RESULTS_FILE
+}
+
+main() {
+    echo "" | tee -a $RESULTS_FILE
+    log_info "===== ЭТАП 1: Nikto ====="
+    log_info "Сканируем: $TARGET_URL"
+    
+    # Запускаем Nikto
+    nikto -h "$TARGET_URL" \
+          -output "$NIKTO_LOG" \
+          -Format txt \
+          -Tuning 123bde \
+          -timeout 10 2>/dev/null
+    
+    if [ $? -eq 0 ]; then
+        log_success "Сканирование завершено"
+        
+        # Парсим результаты
+        if [ -f "$NIKTO_LOG" ]; then
+            log_info "Интересные находки:"
+            
+            # Извлекаем интересные находки
+            grep -E "osvdb|cgi|xss|sql|cookie|directory" "$NIKTO_LOG" | head -15 | while read line; do
+                if [ ! -z "$line" ]; then
+                    log_success "  $line"
+                    echo "$line" >> $RESULTS_FILE
+                fi
+            done
+            
+            # Общая статистика
+            summary=$(grep -E "items found|plugins checked" "$NIKTO_LOG")
+            if [ ! -z "$summary" ]; then
+                log_info "Статистика: $summary"
+            fi
+            
+            rm -f "$NIKTO_LOG"
+        fi
+    else
+        log_error "Nikto завершился с ошибкой"
+    fi
+    
+    echo "" | tee -a $RESULTS_FILE
+}
+
+main "$@"
